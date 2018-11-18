@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React,{Component} from 'react';
+import HomePage from './container/HomePage'
+import './index.css'
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        hi
-      </div>
-    );
+        <HomePage/>
+    )
   }
 }
 
