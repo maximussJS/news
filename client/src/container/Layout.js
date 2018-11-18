@@ -1,17 +1,13 @@
-import React,{Component} from 'react'
+import React from 'react'
 import Header from '../components/Header'
 import Content from '../components/Content'
 
-class HomePage extends Component {
-  render() {
-     return (
+const Layout = props =>
        <div>
           <Header/>
          <br/><br/>
           <Content/>
+         {props.children}
        </div>
-     )
-  }
-}
 
-export default HomePage
+export default Layout

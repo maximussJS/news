@@ -2,16 +2,14 @@ import React from 'react'
 import {Fa,NavbarNav,NavItem,NavLink} from 'mdbreact'
 
 const NavbarNavRight = ({
-    names,
     links
 }) =>
   <NavbarNav right>
-    {names.map( (name,index) =>
+    {Object.keys(links).map(key =>
       <NavItem>
-        <NavLink to={links[index]}
-                 key={index}>
+        <NavLink to={links[key]}>
           <Fa size='3x'
-              icon={name}/>
+              icon={key}/>
         </NavLink>
       </NavItem>
     )}

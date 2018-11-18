@@ -1,11 +1,11 @@
 import React,{Component} from 'react';
-import HomePage from './container/HomePage'
+import Layout from './container/Layout'
 import './index.css'
 
 class App extends Component {
   render() {
     return (
-        <HomePage/>
+        <Layout/>
     )
   }
 }

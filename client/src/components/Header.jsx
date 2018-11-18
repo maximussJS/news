@@ -1,16 +1,19 @@
 import React,{Component} from 'react'
 import {Navbar,NavbarBrand} from 'mdbreact'
 import NavbarNavLeft from './NavbarNavLeft'
-import NavbarNavRight from './NavbarNavRight'
+import NavbarNavRight from './NavbarNavRightt'
 
 const left = {
-  names : ['Home','Features','Pricing','Options'],
-  links : ["#","#","#","#"]
+  Home : '#',
+  Features : '#',
+  Pricing : '#',
+  Options : '#'
 }
 
 const right = {
-  names: ['facebook','github','instagram'],
-  links: ['#','#','#']
+  facebook : '#',
+  github : '#',
+  instagram : '#'
 }
 
 class Header extends Component {
@@ -32,10 +35,8 @@ class Header extends Component {
                           style={logo}>
                <h1>News</h1>
              </NavbarBrand>
-             <NavbarNavLeft names={left.names}
-                            links={left.links}/>
-             <NavbarNavRight names={right.names}
-                             links={right.links}/>
+             <NavbarNavLeft links={left}/>
+             <NavbarNavRight links={right}/>
           </Navbar>
     )
   }
