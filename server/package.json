@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server-side",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Max Korsun",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4"
+  }
+}
