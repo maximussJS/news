@@ -19,6 +19,7 @@ const News = ({
               <h1>{item.title}</h1>
               </CardTitle>
             <CardText>
+              
               <h2>{item.description}</h2>
             </CardText>
             <Button className='btn-lg btn-info'
