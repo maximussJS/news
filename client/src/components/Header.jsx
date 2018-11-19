@@ -4,16 +4,16 @@ import NavbarNavLeft from './NavbarNavLeft'
 import NavbarNavRight from './NavbarNavRightt'
 
 const left = {
-  Home : '#',
-  Features : '#',
-  Pricing : '#',
-  Options : '#'
+  Home : '/home',
+  Features : '/features',
+  Pricing : '/price',
+  Options : '/options'
 }
 
 const right = {
-  facebook : '#',
-  github : '#',
-  instagram : '#'
+  facebook : '/facebook',
+  github : '/github',
+  instagram : '/instagram'
 }
 
 class Header extends Component {

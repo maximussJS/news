@@ -1,13 +1,13 @@
 import React from 'react'
 import Header from '../components/Header'
-import Content from '../components/Content'
+import Footer from '../components/Footer'
 
 const Layout = props =>
        <div>
           <Header/>
          <br/><br/>
-          <Content/>
          {props.children}
+          <Footer/>
        </div>
 
 export default Layout

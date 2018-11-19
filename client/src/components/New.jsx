@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Card, CardBody, CardImage, CardTitle, CardText, Col } from 'mdbreact';
+import {Button,Card,CardBody,CardImage,CardTitle,CardText,Col} from 'mdbreact';
 
 const style = {
    width: '27rem'
 }
 
-const News = ({
+const New = ({
   item
 }) =>
       <Col>
@@ -17,9 +17,8 @@ const News = ({
           <CardBody>
             <CardTitle>
               <h1>{item.title}</h1>
-              </CardTitle>
+            </CardTitle>
             <CardText>
-              
               <h2>{item.description}</h2>
             </CardText>
             <Button className='btn-lg btn-info'
@@ -30,4 +29,4 @@ const News = ({
         </Card>
       </Col>
 
-export default News;
+export default New;

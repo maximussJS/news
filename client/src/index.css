@@ -1,0 +1,12 @@
+.authorization-container {
+    min-height : 500px;
+    margin: auto;
+    display : flex;
+    width : 100%
+}
+
+.authorization-form {
+    margin: auto;
+    height : 100%;
+    width: 300px
+}
