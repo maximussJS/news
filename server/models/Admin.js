@@ -17,22 +17,14 @@ const schema = new mongoose.Schema({
     type : String,
     required: true,
   },
-  instagram: {
-    type: String,
-    unique: true
-  },
-  facebook: {
-    type: String,
-    unique: true,
-  },
   avaUrl: {
     type:String,
-    default: process.env.DEFAULT_USER_AVATAR
+    default : process.env.DEFAULT_ADMIN_AVATAR
   },
   isAdmin: {
     type: Boolean,
     required: true,
-    default : false
+    default : true
   }
 })
 
