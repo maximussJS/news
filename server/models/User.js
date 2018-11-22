@@ -19,11 +19,9 @@ const schema = new mongoose.Schema({
   },
   instagram: {
     type: String,
-    unique: true
   },
   facebook: {
     type: String,
-    unique: true,
   },
   avaUrl: {
     type:String,
@@ -33,6 +31,10 @@ const schema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default : false
+  },
+  age: {
+    type: Number,
+    required : true
   }
 })
 

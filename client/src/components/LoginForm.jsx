@@ -14,9 +14,9 @@ const LoginForm = ({
       <Container className='authorization-container'>
           <form className='authorization-form'
                 onSubmit={onSubmit}>
-              <p className="text-center">
-                 <h1>Sign in</h1>
-              </p>
+              <h1 className="text-center">
+                 Sign in
+              </h1>
               <div className="h1">
                  <Input label="Type Your Email"
                         icon="envelope"
@@ -25,8 +25,8 @@ const LoginForm = ({
                         success="right"
                         onChange={onLoginChange}
                         required
-                        maxlength='20'
-                        minlength='8'
+                        maxLength='20'
+                        minLength='8'
                         value={login}>
                  </Input>
                  <Input label="Type Your Password"
@@ -35,8 +35,8 @@ const LoginForm = ({
                         validate
                         onChange={onPasswordChange}
                         required
-                        maxlength='20'
-                        minlength='8'
+                        maxLength='20'
+                        minLength='8'
                         value={password}>
                  </Input>
                    </div>

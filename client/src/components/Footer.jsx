@@ -9,13 +9,11 @@ const Footer = () =>
           <Row>
             <Col md="12">
               <h2 className="title">News online</h2>
-              <p>
-                <h3>
+              <h3>
                   This site was written by <a href='https://www.instagram.com/korrpus/' >Max Korsun </a>
                   KPI FAM KV-71
-                </h3>
-                <h3>It was written on React and Node</h3>
-              </p>
+                It was written on React and Node
+              </h3>
             </Col>
           </Row>
         </Container>

@@ -33,4 +33,4 @@ schema.plugin(urlSlugs('name',{
   generator: text => tr.slugify(text)
 }))
 
-module.exports = mongoose.model('User',schema)
+module.exports = mongoose.model('Admin',schema)

@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import LoginForm from '../components/LoginForm'
 import {withRouter} from 'react-router-dom'
+import {login} from '../utils/requests'
 
 class Login extends Component {
   constructor (props) {
@@ -37,13 +38,28 @@ class Login extends Component {
     })
   }
 
-  onSubmit() {
-    this.setState({
-      isLoading: true
-    })
-    alert('Login : ' + this.state.login + ' password : ' + this.state.password)
-    this.onReset()
+  onSubmit = async () => {
+    try {
+       const response = await login({
+         email : this.state.login,
+         password : this.state.password
+       })
+       if(response.success) {
+         this.props.history.push('/')
+       }
+       else {
+         this.setState({
+           error : 'Invalid login or password'
+         })
+       }
+     }
+     catch (e) {
+       this.setState({
+         error : 'Invalid login or password'
+       })
+     }
   }
+
 
   render () {
     return (

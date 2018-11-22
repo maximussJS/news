@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 
 const Encrypt  = async password => {
   try {
-    return await bcrypt.hash(password, process.env.SALT)
+    return await bcrypt.hash(password,10)
   }
   catch (e) {
       console.error(e)
