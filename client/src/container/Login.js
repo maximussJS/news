@@ -8,11 +8,13 @@ class Login extends Component {
     this.state = {
       login : '',
       password : '',
-      error : ''
+      error : '',
+      isLoading : false
     }
     this.onLoginChange = this.onLoginChange.bind(this)
     this.onPasswordChange = this.onPasswordChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
+    this.onReset = this.onReset.bind(this)
   }
 
   onLoginChange(e) {
@@ -27,8 +29,20 @@ class Login extends Component {
     })
   }
 
+  onReset() {
+    this.setState({
+      password : '',
+      login : '',
+      isLoading : false
+    })
+  }
+
   onSubmit() {
+    this.setState({
+      isLoading: true
+    })
     alert('Login : ' + this.state.login + ' password : ' + this.state.password)
+    this.onReset()
   }
 
   render () {
@@ -36,7 +50,11 @@ class Login extends Component {
         <LoginForm onSubmit={this.onSubmit}
                    onPasswordChange={this.onPasswordChange}
                    onLoginChange={this.onLoginChange}
-                   error={this.state.error}/>
+                   onReset={this.onReset}
+                   error={this.state.error}
+                   login={this.state.login}
+                   password={this.state.password}
+                   isLoading={this.state.isLoading}/>
     )
   }
 }
