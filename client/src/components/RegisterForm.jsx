@@ -1,24 +1,24 @@
 import React from 'react'
-import {Container,Input,Button} from 'mdbreact'
+import {Container,Input,Button,FormInline} from 'mdbreact'
 
 const RegisterForm = ({
    onSubmit,
    onNameChange,
    onEmailChange,
-   onConfirmEmailChange,
    onPasswordChange,
    onConfirmPasswordChange,
    onAgeChange,
    onCountryChange,
+   onRadioChecked,
    onReset,
    isLoading,
    name,
    email,
-   confirmEmail,
    password,
    confirmPassword,
    age,
    country,
+   radio,
    error
 }) => {
     return (
@@ -49,16 +49,6 @@ const RegisterForm = ({
                        value={email}
                        required
                        onChange={onEmailChange}/>
-                <Input label="Confirm Your Email"
-                       icon="exclamation-triangle"
-                       group type="text"
-                       validate error="wrong"
-                       success="right"
-                       maxLength="20"
-                       minLength="8"
-                       value={confirmEmail}
-                       required
-                       onChange={onConfirmEmailChange}/>
                 <Input label="Your Password"
                        icon="lock"
                        group type="password"
@@ -93,10 +83,24 @@ const RegisterForm = ({
                        validate error="wrong"
                        success="right"
                        maxLength="16"
-                       minLength="4"
+                       minLength="3"
                        value={country}
                        required
                        onChange={onCountryChange}/>
+                <FormInline required>
+                  <Input
+                    onClick={() => onRadioChecked(1)}
+                    checked={radio === 1}
+                    icon='male'
+                    type="radio"
+                    id="radio1"/>
+                  <Input
+                    onClick={() => onRadioChecked(0)}
+                    checked={radio === 0}
+                    icon='female'
+                    type="radio"
+                    id="radio2"/>
+                </FormInline>
                 {error ? <span className='text-danger h4'>{error}</span> : undefined }
               </div>
               <div className="text-center">

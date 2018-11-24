@@ -35,6 +35,10 @@ const schema = new mongoose.Schema({
   age: {
     type: Number,
     required : true
+  },
+  gender: {
+    type: Boolean,
+    required : true
   }
 })
 

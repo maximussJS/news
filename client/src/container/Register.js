@@ -10,11 +10,11 @@ class Register extends Component {
     this.state = {
       name : '',
       email : '',
-      confirmEmail : '',
       password : '',
       confirmPassword : '',
       age : null,
       country : '',
+      radio : null,
       isLoading : false,
       error : ''
     }
@@ -22,10 +22,10 @@ class Register extends Component {
     this.onReset = this.onReset.bind(this)
     this.onNameChange = this.onNameChange.bind(this)
     this.onEmailChange = this.onEmailChange.bind(this)
-    this.onConfirmEmailChange = this.onConfirmEmailChange.bind(this)
     this.onPasswordChange = this.onPasswordChange.bind(this)
     this.onConfirmPasswordChange = this.onConfirmPasswordChange.bind(this)
     this.onAgeChange = this.onAgeChange.bind(this)
+    this.onRadioChange = this.onRadioChange.bind(this)
     this.onCountryChange = this.onCountryChange.bind(this)
   }
 
@@ -39,7 +39,8 @@ class Register extends Component {
           email : this.state.email,
           password : this.state.password,
           age : this.state.age,
-          country : this.state.country
+          country : this.state.country,
+          gender : this.state.radio
         })
         alert(response.token)
         if(response.success) {
@@ -68,22 +69,6 @@ class Register extends Component {
   onEmailChange(e) {
     this.setState({
       email : e.target.value
-    })
-  }
-
-  onConfirmEmailChange(e) {
-    if(!this.state.email) {
-      this.setState({
-        confirmEmail : e.target.value
-      })
-      return
-    }
-    let err
-    if(this.state.email !== e.target.value) err = 'Emails do not match'
-    else err = ''
-    this.setState({
-      confirmEmail : e.target.value,
-      error : err
     })
   }
 
@@ -121,15 +106,21 @@ class Register extends Component {
     })
   }
 
+  onRadioChange = number => {
+    this.setState({
+      radio : number
+    })
+  }
+
   onReset() {
     this.setState({
       name : '',
       email : '',
-      confirmEmail : '',
       password : '',
       confirmPassword : '',
       age : null,
       country : '',
+      radio : null,
       error : '',
       isLoading : false
     })
@@ -140,21 +131,21 @@ class Register extends Component {
       <RegisterForm onSubmit={this.onSubmit}
                     onNameChange={this.onNameChange}
                     onEmailChange={this.onEmailChange}
-                    onConfirmEmailChange={this.onConfirmEmailChange}
                     onPasswordChange={this.onPasswordChange}
                     onConfirmPasswordChange={this.onConfirmPasswordChange}
                     onAgeChange={this.onAgeChange}
                     onCountryChange={this.onCountryChange}
+                    onRadioChecked={this.onRadioChange}
                     onReset={this.onReset}
                     isLoading={this.state.isLoading}
                     error={this.state.error}
                     name={this.state.name}
                     email={this.state.email}
-                    confirmEmail={this.state.confirmEmail}
                     password={this.state.password}
                     confirmPassword={this.state.confirmPassword}
                     age={this.state.age}
-                    country={this.state.country}/>
+                    country={this.state.country}
+                    radio={this.state.radio}/>
     )
   }
 }
