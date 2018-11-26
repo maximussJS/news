@@ -1,23 +1,19 @@
 import React from 'react'
 import {Container} from 'mdbreact'
+import Spinner from './Spinner'
 import New from './New'
 
-const container = {
-  height: 1200,
-  marginTop : 40
-}
-
-let a = {
-  title : 'NEW',
-  description : 'Hadasfasfasfasff',
-  url : 'adasdasd',
-  avaUrl : 'https://res.cloudinary.com/maximuss/image/upload/v1541690540/wp3mopgb7v7iqjqwz4uv.jpg'
-}
-const Content = () =>
-  <Container style={container} className="text-center">
+const Content = ({
+   items,
+   loading,
+   error
+}) =>
+   <Container className="text-center content-container">
+     {loading ? <Spinner/> :
     <div className='row col-md-12'>
-   <New item={a}/>
-    </div>
+      {items ? items.map(key => <New item={key}/>) : "No items"}
+    </div> }
+     {error && "Error ...."}
   </Container>
 
 export default Content

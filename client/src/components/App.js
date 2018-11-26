@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route,Switch} from 'react-router-dom'
-import Content from './Content'
+import Content from '../container/Content'
 import Login from '../container/Login'
 import Register from '../container/Register'
 import Layout from '../container/Layout'
@@ -17,6 +17,5 @@ const App = () => {
         </Layout>
     )
 }
-
 
 export default App;

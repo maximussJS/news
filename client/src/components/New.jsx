@@ -12,7 +12,7 @@ const New = ({
         <Card style={style}>
           <CardImage
             className="img-fluid"
-            src={item.avaUrl}
+            src={item.image}
             waves/>
           <CardBody>
             <CardTitle>

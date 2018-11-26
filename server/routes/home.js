@@ -1,8 +1,19 @@
 const router = require('express').Router()
+const New = require('../models').New
+const serverError = require('../utils/error').serverError
 
-router.get('/', (req,res) => {
-  console.log(req.body)
-  res.send(200)
+router.get('/', async(req,res) => {
+  try {
+    const news = await New.find().sort({
+      date : -1
+    })
+    res.status(200).json({
+      news : news
+    })
+  }
+  catch (e) {
+    serverError(e,res)
+  }
 })
 
 module.exports = router
