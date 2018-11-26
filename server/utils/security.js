@@ -1,59 +1,13 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const Encrypt  = async password => {
-  try {
-    return await bcrypt.hash(password,10)
-  }
-  catch (e) {
-      console.error(e)
-      return {
-        error : e
-      }
-  }
-}
+const Encrypt  = password => bcrypt.hashSync(password,10)
 
-const GenerateToken  = async userID => {
-  try {
-    const userData = {
-      id: userID
-    }
-    return await jwt.sign(userData, process.env.SECRET)
-  }
-  catch (e) {
-    console.error(e)
-    return {
-      error : e
-    }
-  }
-}
+const GenerateToken  = user => jwt.sign( {user : user }, process.env.SECRET)
 
-const VerifyToken  = async token => {
-  try {
-    const payload = await jwt.verify(token, process.env.SECRET)
-    return {
-      id: payload.id
-    }
-  }
-  catch (e) {
-    console.error(e)
-    return {
-      error : e
-    }
-  }
-}
+const VerifyToken  = token => jwt.verify(token, process.env.SECRET)
 
-const VerifyHash = async (password,hash) => {
-  try {
-    return await bcrypt.compare(password,hash)
-  }
-  catch (e) {
-    console.error(e)
-    return {
-      error : e
-    }
-  }
-}
+const VerifyHash = (password,hash) => bcrypt.compareSync(password,hash)
 
 module.exports = {
   Encrypt,

@@ -12,7 +12,6 @@ const Footer = () =>
               <h3>
                   This site was written by <a href='https://www.instagram.com/korrpus/' >Max Korsun </a>
                   KPI FAM KV-71
-                It was written on React and Node
               </h3>
             </Col>
           </Row>

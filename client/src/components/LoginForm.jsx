@@ -12,8 +12,7 @@ const LoginForm = ({
 }) => {
     return (
       <Container className='authorization-container'>
-          <form className='authorization-form'
-                onSubmit={onSubmit}>
+          <form className='authorization-form'>
               <h1 className="text-center">
                  Sign in
               </h1>
@@ -41,10 +40,13 @@ const LoginForm = ({
                  </Input>
                    </div>
                    <div className="text-center">
-                     <Button className='btn-lg'
-                             color='success'
-                             type='submit'
-                             disabled={isLoading}>
+                     <Button
+                       className='btn-lg'
+                       color='success'
+                       type='submit'
+                       disabled={isLoading}
+                       onClick={onSubmit}
+                     >
                        Login
                      </Button>
                      <Button className='btn-lg'

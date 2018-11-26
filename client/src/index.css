@@ -49,3 +49,12 @@
 @-webkit-keyframes spin {
     to { -webkit-transform: rotate(360deg); }
 }
+
+.logo-style {
+   color : black;
+}
+
+.my-navbar-style {
+    background-color: #ff3333;
+    max-height : 30px;
+}

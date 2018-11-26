@@ -2,7 +2,6 @@ import React,{Component} from 'react'
 import RegisterForm from '../components/RegisterForm'
 import {withRouter} from 'react-router-dom'
 import {register} from '../utils/requests'
-import {Authenticate} from '../utils/auth'
 
 class Register extends Component {
   constructor(props) {
@@ -31,7 +30,7 @@ class Register extends Component {
 
   onSubmit = async () => {
       try {
-        this.setState({
+        await this.setState({
           isLoading : true
         })
         const response = await register({
@@ -42,17 +41,11 @@ class Register extends Component {
           country : this.state.country,
           gender : this.state.radio
         })
-        alert(response.token)
-        if(response.success) {
-          Authenticate(response.token)
-          this.props.history.push('/')
-        }
-        else {
-          this.setState({
+        if(response.success) this.props.history.push('/login')
+        else this.setState({
             error : response.message
           })
         }
-      }
       catch (e) {
         this.setState({
           error : e.message

@@ -7,7 +7,7 @@ router.get('/', async(req,res) => {
     const news = await New.find().sort({
       date : -1
     })
-    res.status(200).json({
+    return res.status(200).json({
       news : news
     })
   }

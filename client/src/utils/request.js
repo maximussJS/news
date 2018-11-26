@@ -2,6 +2,7 @@ import {getToken} from './auth'
 
 export const request = async (method, path, data ) => {
   try {
+    console.log("asdasd")
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `${getToken()}`
@@ -15,10 +16,11 @@ export const request = async (method, path, data ) => {
       headers: headers
     }
     const response = await fetch(`http://localhost:3000${path}`, options)
+    console.log("resp")
     if(response.status >= 500) new Error("Internal Server Error")
     const json = await response.json()
+    console.log("JSON : " ,json)
     if(!json.success) new Error(json.message)
-    console.log("from api: ", json)
     return json
   }
   catch (e) {

@@ -2,6 +2,7 @@ import React,{Component} from 'react'
 import LoginForm from '../components/LoginForm'
 import {withRouter} from 'react-router-dom'
 import {login} from '../utils/requests'
+import {Authenticate} from '../utils/auth'
 
 class Login extends Component {
   constructor (props) {
@@ -14,7 +15,6 @@ class Login extends Component {
     }
     this.onLoginChange = this.onLoginChange.bind(this)
     this.onPasswordChange = this.onPasswordChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
     this.onReset = this.onReset.bind(this)
   }
 
@@ -44,7 +44,10 @@ class Login extends Component {
          email : this.state.login,
          password : this.state.password
        })
+       console.log(response)
        if(response.success) {
+         console.log(response)
+         Authenticate(response.token)
          this.props.history.push('/')
        }
        else {
