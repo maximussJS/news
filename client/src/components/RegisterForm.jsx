@@ -1,28 +1,15 @@
 import React from 'react'
 import {Container,Input,Button,FormInline} from 'mdbreact'
+import PropTypes from 'prop-types'
 
-const RegisterForm = ({
-   onSubmit,
-   onNameChange,
-   onEmailChange,
-   onPasswordChange,
-   onConfirmPasswordChange,
-   onAgeChange,
-   onCountryChange,
-   onRadioChecked,
-   onReset,
-   isLoading,
-   name,
-   email,
-   password,
-   confirmPassword,
-   age,
-   country,
-   radio,
-   error
-}) => {
+const RegisterForm = (props) => {
+    const {onSubmit,onNameChange,onEmailChange,onPasswordChange,onConfirmPasswordChange,
+           onAgeChange,onCountryChange,onRadioChecked,onReset,isLoading,name,email,
+           password,confirmPassword,age,country,radio,error} = props
     return (
-      isLoading ? <h1>Loading...</h1> :  <Container className='authorization-container'>
+      isLoading ?
+        <h1>Loading...</h1> :
+        <Container className='authorization-container'>
           <form className='authorization-form'
                 onSubmit={onSubmit}>
             <h1 className="text-center">
@@ -121,6 +108,27 @@ const RegisterForm = ({
           </form>
         </Container>
     )
+}
+
+RegisterForm.propTypes = {
+  onSubmit : PropTypes.func.isRequired,
+  onNameChange : PropTypes.func.isRequired,
+  onEmailChange : PropTypes.func.isRequired,
+  onPasswordChange : PropTypes.func.isRequired,
+  onConfirmPasswordChange : PropTypes.func.isRequired,
+  onAgeChange : PropTypes.func.isRequired,
+  onCountryChange : PropTypes.func.isRequired,
+  onRadioChecked : PropTypes.func.isRequired,
+  onReset : PropTypes.func.isRequired,
+  isLoading : PropTypes.bool.isRequired,
+  name : PropTypes.string.isRequired,
+  email :  PropTypes.string.isRequired,
+  password : PropTypes.string.isRequired,
+  confirmPassword : PropTypes.string.isRequired,
+  age : PropTypes.number.isRequired,
+  country :  PropTypes.string.isRequired,
+  radio : PropTypes.number.isRequired,
+  error :  PropTypes.string.isRequired
 }
 
 export default RegisterForm;

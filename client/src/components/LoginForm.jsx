@@ -1,15 +1,9 @@
 import React from 'react'
 import {Container,Input,Button} from 'mdbreact'
+import PropTypes from 'prop-types'
 
-const LoginForm = ({
-   onSubmit,
-   onLoginChange,
-   onPasswordChange,
-   onReset,
-   login,
-   password,
-   isLoading
-}) => {
+const LoginForm = (props) => {
+    const {onSubmit,onLoginChange,onPasswordChange,onReset,login,password,isLoading} = props
     return (
       <Container className='authorization-container'>
           <form className='authorization-form'>
@@ -61,5 +55,14 @@ const LoginForm = ({
     )
 }
 
+LoginForm.propTypes = {
+  onSubmit : PropTypes.func.isRequired,
+  onLoginChange : PropTypes.func.isRequired,
+  onPasswordChange : PropTypes.func.isRequired,
+  onReset : PropTypes.func.isRequired,
+  login : PropTypes.string.isRequired,
+  password : PropTypes.string.isRequired,
+  isLoading : PropTypes.bool.isRequired
+}
 
 export default LoginForm;
