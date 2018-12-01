@@ -5,6 +5,7 @@ import Login from '../container/Login'
 import Register from '../container/Register'
 import Layout from '../container/Layout'
 import Profile from '../container/Profile'
+import Options from '../container/Options'
 import '../index.css'
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
             <Route exact component={Content} path='/'/>
             <Route exact component={Login} path='/login'/>
             <Route exact component={Register} path='/register'/>
+            <Route component={Options} path='/options'/>
             <Route component={Profile} path='/profile'/>
           </Switch>
         </Layout>

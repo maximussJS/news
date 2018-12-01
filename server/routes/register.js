@@ -2,7 +2,7 @@ const router = require('express').Router()
 const User = require('../models').User
 const {successResponse,errorResponse} = require('../utils/response')
 const {serverError} = require('../utils/error')
-const {Encrypt} = require('../utils/security')
+const {Encrypt,GenerateToken} = require('../utils/security')
 
 router.get('/', (req,res) => res.status(200).json(successResponse('OK')))
 
@@ -39,10 +39,14 @@ router.post('/', async (req,res) => {
          gender
        })
        if(!usr) serverError('User.create failed',res)
-       else return res.status(200).json({
+       else {
+         const token = GenerateToken(usr)
+         return res.status(200).json({
            success : true,
            message : 'User created',
-       })
+           token : token
+         })
+       }
     }
     else return res.status(401).json(errorResponse('Email is already taken'))
   }

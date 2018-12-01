@@ -13,10 +13,11 @@ router.post('/', async (req,res) => {
       if(!VerifyHash(password,user.password)) return res.status(401).json(errorResponse('Invalid login or password'))
       else {
         const token = GenerateToken(user)
+        console.log('ok')
         return res.status(200).json({
           success : true,
-          token
-        })
+          token : token
+        }).end()
       }
     }
   }

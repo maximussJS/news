@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import LoginForm from '../components/LoginForm'
 import {withRouter} from 'react-router-dom'
-import {login} from '../utils/requests'
+import {dologin} from '../utils/requests'
 import {Authenticate} from '../utils/auth'
 
 class Login extends Component {
@@ -38,13 +38,13 @@ class Login extends Component {
     })
   }
 
-  onSubmit = async () => {
+  onSubmit = async()  => {
     try {
-       const response = await login({
+       const response = await dologin({
          email : this.state.login,
          password : this.state.password
        })
-       console.log(response)
+      alert("RSULT" +response)
        if(response.success) {
          console.log(response)
          Authenticate(response.token)
@@ -57,9 +57,7 @@ class Login extends Component {
        }
      }
      catch (e) {
-       this.setState({
-         error : 'Invalid login or password'
-       })
+       alert(e )
      }
   }
 

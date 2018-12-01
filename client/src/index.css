@@ -30,8 +30,6 @@
     margin-top : 40px;
 }
 
-
-
 #loading {
     display: inline-block;
     width: 50px;
@@ -61,4 +59,15 @@
 
 .card-style {
     width : 27rem;
+}
+
+.container-form {
+    height:475px;
+    margin-top: 40px;
+}
+
+.option-form {
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px;
 }
