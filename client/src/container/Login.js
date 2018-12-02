@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import LoginForm from '../components/LoginForm'
 import {withRouter} from 'react-router-dom'
-import {dologin} from '../utils/requests'
+import {login} from '../utils/requests'
 import {Authenticate} from '../utils/auth'
 
 class Login extends Component {
@@ -43,7 +43,7 @@ class Login extends Component {
        await this.setState({
          isLoading : true
        })
-       const response = await dologin({
+       const response = await login({
          email : this.state.login,
          password : this.state.password
        })

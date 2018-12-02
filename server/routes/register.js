@@ -18,7 +18,7 @@ router.post('/', async (req,res) => {
     if(name.length < 2) return res.status(400).json(errorResponse('Name length is too small'))
     if(email.length > 20) return res.status(400).json(errorResponse('Email length is too big'))
     if(email.length < 8) return res.status(400).json(errorResponse('Email length is too small'))
-    // if(email.includes('@')) return res.status(400).json(errorResponse('@ symbol must be in email'))
+    //if(email.includes('@')) return res.status(400).json(errorResponse('@ symbol must be in email'))
     if(password.length > 20) return res.status(400).json(errorResponse('Password length is too big'))
     if(password.length < 8) return res.status(400).json(errorResponse('Password length is too small'))
     if(country.length > 16) return res.status(400).json(errorResponse('Country length is too big'))
@@ -32,11 +32,11 @@ router.post('/', async (req,res) => {
        if(!hash) serverError('Hash password failed',res)
        const usr = await User.create({
          password : hash,
-         name,
-         email,
-         age,
-         country,
-         gender
+         name : name,
+         email : email,
+         age : age,
+         country : country,
+         gender : gender
        })
        if(!usr) serverError('User.create failed',res)
        else {

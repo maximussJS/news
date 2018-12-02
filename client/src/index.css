@@ -62,7 +62,7 @@
 }
 
 .container-form {
-    height:475px;
+    height:550px;
     margin-top: 40px;
 }
 
@@ -70,4 +70,15 @@
     width: 50%;
     margin: 0 auto;
     padding: 10px;
+    border: 1px solid blue;
+}
+
+hr {
+    background-color: cornflowerblue;
+    width : 99%;
+    margin: 5px;
+}
+
+.mytag {
+    color : white;
 }

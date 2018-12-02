@@ -39,6 +39,10 @@ const schema = new mongoose.Schema({
   gender: {
     type: Boolean,
     required : true
+  },
+  country : {
+    type : String,
+    required : true
   }
 })
 

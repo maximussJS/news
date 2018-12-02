@@ -2,43 +2,28 @@ import React,{Component} from 'react'
 import {Navbar,NavbarBrand} from 'mdbreact'
 import NavbarNavLeft from './NavbarNavLeft'
 import NavbarNavRight from './NavbarNavRightt'
-import {isAuthenticated,getUser} from '../utils/auth'
-
-const leftarize  = (user) => {
-  return {
-    Profile: `/profile/${user.url}`,
-    Features: `/features/${user.url}`,
-    Options: `/options/${user.url}`
-  }
-}
-
-const rigthize = (user) => {
-   return {
-     facebook: `/facebook/${user.facebook}`,
-     github : `/github/${user.github}`,
-     instagram: `/instagram/${user.instagram}`
-   }
-}
+import {isAuthenticated} from '../utils/auth'
+import {navbarLeftLinks,navbarRightLinks} from '../utils/links'
 
 class Header extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      left : {},
-      right : {},
+      leftNavbar : {},
+      rightNavbar : {},
       error : ''
     }
   }
 
   componentDidMount() {
     isAuthenticated() && this.setState({
-          left: leftarize(getUser()),
-          rigth: rigthize(getUser())
+          leftNavbar : navbarLeftLinks,
+          rightNavbar : navbarRightLinks
     })
   }
 
   render() {
-    const {error,left,right} = this.state
+    const {error,leftNavbar,rightNavbar} = this.state
     return (
       !error ? <Navbar className='my-navbar-style'
                        dark expand="md"
@@ -48,8 +33,8 @@ class Header extends Component {
                        className="h1 logo-style">
             <h1>News</h1>
           </NavbarBrand>
-          <NavbarNavLeft links={left}/>
-          <NavbarNavRight links={right}/>
+          <NavbarNavLeft links={leftNavbar}/>
+          <NavbarNavRight links={rightNavbar}/>
         </Navbar> : null
     )
   }
