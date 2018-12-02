@@ -3,7 +3,7 @@ import {Container,Input,Button} from 'mdbreact'
 import PropTypes from 'prop-types'
 
 const LoginForm = (props) => {
-    const {onSubmit,onLoginChange,onPasswordChange,onReset,login,password,isLoading} = props
+    const {onSubmit,onLoginChange,onPasswordChange,onReset,login,password,isLoading,error} = props
     return (
       <Container className='authorization-container'>
           <form className='authorization-form'>
@@ -33,7 +33,8 @@ const LoginForm = (props) => {
                         value={password}>
                  </Input>
                    </div>
-                   <div className="text-center">
+            {error ? <span className='text-danger h4'>{error}</span> : undefined }
+            <div className="text-center">
                      <Button
                        className='btn-lg'
                        color='success'
@@ -62,7 +63,8 @@ LoginForm.propTypes = {
   onReset : PropTypes.func.isRequired,
   login : PropTypes.string.isRequired,
   password : PropTypes.string.isRequired,
-  isLoading : PropTypes.bool.isRequired
+  isLoading : PropTypes.bool.isRequired,
+  error : PropTypes.string.isRequired
 }
 
 export default LoginForm;

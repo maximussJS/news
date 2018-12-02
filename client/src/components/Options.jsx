@@ -1,7 +1,6 @@
 import React from 'react'
 import {Container,MDBInput,FormInline,Button} from 'mdbreact'
 import PropTypes from 'prop-types'
-import { Input } from './RegisterForm'
 
 const OptionForm = (props) => {
   const {name,email,password,country,age,gender,newPassword,isLoading,error} = props

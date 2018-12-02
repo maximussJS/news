@@ -36,10 +36,12 @@ class Content extends Component {
   }
 
   render () {
-    const {news, isLoading, error} = this.state
-    return <ContentComponent items={news}
-                             loading={isLoading}
-                             error={error}/>
+    const {news,isLoading,error} = this.state
+    return (
+      <ContentComponent items={news}
+                        loading={isLoading}
+                        error={error}/>
+    )
   }
 }
 

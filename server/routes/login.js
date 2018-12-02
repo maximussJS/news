@@ -7,7 +7,9 @@ const User = require('../models').User
 router.post('/', async (req,res) => {
   try {
     const {email,password} = req.body
-    const user = await User.findOne({email : email})
+    const user = await User.findOne({
+      email : email
+    })
     if(!user) return res.status(401).json(errorResponse('Invalid login or password'))
     else {
       if(!VerifyHash(password,user.password)) return res.status(401).json(errorResponse('Invalid login or password'))
@@ -16,8 +18,9 @@ router.post('/', async (req,res) => {
         console.log('ok')
         return res.status(200).json({
           success : true,
+          message : 'Success',
           token : token
-        }).end()
+        })
       }
     }
   }

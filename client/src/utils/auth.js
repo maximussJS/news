@@ -1,14 +1,11 @@
-const Authenticate = token => localStorage.setItem('token', token);
+import decode from 'jwt-decode'
 
-const Deauthenticate = () => localStorage.removeItem('token')
+export const Authenticate = token => localStorage.setItem('token', token)
 
-const getToken = () => localStorage.getItem('token');
+export const Deauthenticate = () => localStorage.removeItem('token')
 
-const isAuthenticated = () => localStorage.getItem('token') !== null;
+export const getToken = () => localStorage.getItem('token')
 
-module.exports = {
-  Authenticate,
-  Deauthenticate,
-  getToken,
-  isAuthenticated
-}
+export const isAuthenticated = () => localStorage.getItem('token') !== null
+
+export const getUser = () => decode(getToken()).user

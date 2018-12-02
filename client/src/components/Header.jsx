@@ -2,8 +2,7 @@ import React,{Component} from 'react'
 import {Navbar,NavbarBrand} from 'mdbreact'
 import NavbarNavLeft from './NavbarNavLeft'
 import NavbarNavRight from './NavbarNavRightt'
-import {isAuthenticated} from '../utils/auth'
-import {getUser} from '../utils/requests'
+import {isAuthenticated,getUser} from '../utils/auth'
 
 const leftarize  = (user) => {
   return {
@@ -31,22 +30,11 @@ class Header extends Component {
     }
   }
 
-  async componentDidMount() {
-    try {
-      const auth = await isAuthenticated()
-      if (auth) {
-        const result = await getUser()
-        if (result.auth) await this.setState({
-            left: leftarize(result.user),
-            rigth: rigthize(result.user),
-        })
-      }
-    }
-    catch (e) {
-       this.setState({
-         error : e.message
-       })
-    }
+  componentDidMount() {
+    isAuthenticated() && this.setState({
+          left: leftarize(getUser()),
+          rigth: rigthize(getUser())
+    })
   }
 
   render() {

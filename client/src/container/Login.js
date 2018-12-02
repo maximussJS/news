@@ -40,13 +40,14 @@ class Login extends Component {
 
   onSubmit = async()  => {
     try {
+       await this.setState({
+         isLoading : true
+       })
        const response = await dologin({
          email : this.state.login,
          password : this.state.password
        })
-      alert("RSULT" +response)
        if(response.success) {
-         console.log(response)
          Authenticate(response.token)
          this.props.history.push('/')
        }
@@ -57,7 +58,9 @@ class Login extends Component {
        }
      }
      catch (e) {
-       alert(e )
+       this.setState({
+         error : e
+       })
      }
   }
 

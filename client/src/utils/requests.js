@@ -1,6 +1,6 @@
 import {request} from './request'
 
-export const dologin = data => request('POST','/login', data)
+export const dologin = async data => await request('post','/login', data)
 
 export const register = async data => await request('post','/register',data)
 

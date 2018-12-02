@@ -14,14 +14,6 @@ export const request = (method, path, data ) => new Promise( (resolve,reject) =>
     headers: headers
   }
   fetch(`http://localhost:3000${path}`, options)
-    .then(response => {
-      alert(response.toString())
-      return response.json()
-    }).then(json => {
-      alert('json' + json)
-      resolve(json)
-    }).catch(e => {
-      alert(e)
-      reject(e)
-    })
+    .then(response => response.json().then(json => resolve(json)))
+    .catch(e => reject(e))
 })
