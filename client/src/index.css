@@ -53,7 +53,7 @@
 }
 
 .my-navbar-style {
-    background-color: #ff3333;
+    background-color: #7D83FF;
     max-height : 30px;
 }
 
@@ -70,15 +70,14 @@
     width: 50%;
     margin: 0 auto;
     padding: 10px;
-    border: 1px solid blue;
 }
 
 hr {
-    background-color: cornflowerblue;
+    background-color: white;
     width : 99%;
     margin: 5px;
 }
 
-.mytag {
-    color : white;
+.footer-color {
+    background-color: #221AFF;
 }

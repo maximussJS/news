@@ -8,4 +8,6 @@ export const getNewsArray = async () => await request('get','/')
 
 export const getUser = async () => await request('get','/user')
 
-export const updateUser = async data => await request('put','/update',data)
+export const updateUser = async data => await request('put','/update/user',data)
+
+export const deleteUser = async () => await request('delete','/delete/user')

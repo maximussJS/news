@@ -2,7 +2,7 @@ import React from 'react'
 import {Fa,NavbarNav,NavItem,NavLink} from 'mdbreact'
 import PropTypes from 'prop-types'
 
-const NavbarNavRight = (props) => {
+const NavbarNavRight = props => {
   const links = props.links
   return (
     <NavbarNav right>

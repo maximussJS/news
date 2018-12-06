@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import OptionForm from '../components/Options'
-import {getUser,Authenticate} from '../utils/auth'
-import {updateUser} from '../utils/requests'
+import {getUser,Authenticate,Deauthenticate} from '../utils/auth'
+import {updateUser,deleteUser} from '../utils/requests'
 
 class Options extends Component {
    constructor (props) {
@@ -52,17 +52,21 @@ class Options extends Component {
          if(user.country !== country) result.country = country
          if(user.age !== age) result.age = age
          if(+user.gender !== gender) user.gender = gender
-         if(password !== '' && newPassword !== '') result.password = newPassword
+         if(password !== '') result.password = password
+         if(newPassword !== '') result.newPassword = newPassword
          const response = await updateUser(result)
          if(response.success) {
            Authenticate(response.token)
-           alert(JSON.stringify(result))
            this.props.history.push('/')
          }
          else {
            this.setState({
+             isLoading : false,
              error : response.message
            })
+           setTimeout(() => this.setState({
+             error : ''
+           }),2000)
          }
        }
 
@@ -127,8 +131,31 @@ class Options extends Component {
     })
   }
 
-  onDeleteClick() {
-
+  async onDeleteClick() {
+    try {
+      await this.setState({
+        isLoading : true
+      })
+      const response = await deleteUser()
+      if(response.success) {
+         Deauthenticate()
+         this.props.history.push('/login')
+      }
+      else {
+        this.setState({
+          isLoading : false,
+          error : 'Something goes wrong..',
+        })
+        setTimeout(() => this.setState({
+            error : ''
+        }),2000)
+      }
+    }
+    catch (e) {
+      this.setState({
+        error : e.message
+      })
+    }
   }
 
   render () {

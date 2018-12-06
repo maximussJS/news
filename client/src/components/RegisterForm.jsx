@@ -2,7 +2,7 @@ import React from 'react'
 import {Container,Input,Button,FormInline} from 'mdbreact'
 import PropTypes from 'prop-types'
 
-const RegisterForm = (props) => {
+const RegisterForm = props => {
     const {onSubmit,onNameChange,onEmailChange,onPasswordChange,onConfirmPasswordChange,
            onAgeChange,onCountryChange,onRadioChecked,onReset,isLoading,name,email,
            password,confirmPassword,age,country,radio,error} = props
@@ -75,18 +75,16 @@ const RegisterForm = (props) => {
                      required
                      onChange={onCountryChange}/>
               <FormInline required>
-                <Input
-                  onClick={() => onRadioChecked(1)}
-                  checked={radio === 1}
-                  icon='male'
-                  type="radio"
-                  id="radio1"/>
-                <Input
-                  onClick={() => onRadioChecked(0)}
-                  checked={radio === 0}
-                  icon='female'
-                  type="radio"
-                  id="radio2"/>
+                <Input onClick={() => onRadioChecked(1)}
+                       checked={radio === 1}
+                       icon='male'
+                       type="radio"
+                       id="radio1"/>
+                <Input onClick={() => onRadioChecked(0)}
+                       checked={radio === 0}
+                       icon='female'
+                       type="radio"
+                       id="radio2"/>
               </FormInline>
               {error ? <span className='text-danger h4'>{error}</span> : undefined }
             </div>

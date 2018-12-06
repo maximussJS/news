@@ -2,8 +2,7 @@ import React from 'react'
 import {Col,Container,Row,Footer as FooterMDB} from "mdbreact"
 
 const Footer = () =>
-      <FooterMDB color='red'
-                 className="font-small pt-4 mt-12">
+      <FooterMDB className="font-small pt-4 mt-12 footer-color">
         <Container fluid
                    className="text-center col-6">
           <Row>

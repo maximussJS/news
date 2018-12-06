@@ -2,7 +2,7 @@ import React from 'react'
 import {Container,Input,Button} from 'mdbreact'
 import PropTypes from 'prop-types'
 
-const LoginForm = (props) => {
+const LoginForm = props => {
     const {onSubmit,onLoginChange,onPasswordChange,onReset,login,password,isLoading,error} = props
     return (
       <Container className='authorization-container'>
@@ -33,7 +33,10 @@ const LoginForm = (props) => {
                         value={password}>
                  </Input>
               </div>
-            {error ? <span className='text-danger h4'>{error}</span> : undefined }
+            {error ?
+              <span className='text-danger h4'>
+                {error}
+              </span> : undefined }
             <div className="text-center">
                      <Button className='btn-lg'
                              color='success'
