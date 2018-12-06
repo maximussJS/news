@@ -32,16 +32,14 @@ const LoginForm = (props) => {
                         minLength='8'
                         value={password}>
                  </Input>
-                   </div>
+              </div>
             {error ? <span className='text-danger h4'>{error}</span> : undefined }
             <div className="text-center">
-                     <Button
-                       className='btn-lg'
-                       color='success'
-                       type='submit'
-                       disabled={isLoading}
-                       onClick={onSubmit}
-                     >
+                     <Button className='btn-lg'
+                             color='success'
+                             type='submit'
+                             disabled={isLoading}
+                             onClick={onSubmit}>
                        Login
                      </Button>
                      <Button className='btn-lg'

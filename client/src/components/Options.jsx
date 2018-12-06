@@ -2,7 +2,7 @@ import React from 'react'
 import {Container,MDBInput,FormInline,Button} from 'mdbreact'
 import PropTypes from 'prop-types'
 
-const OptionForm = (props) => {
+const OptionForm = props => {
   const {onSubmit,onNameChange,onEmailChange,onPasswordChange,onNewPasswordChange,onAgeChange,onCountryChange,
          onGenderChange,name,email,password,country,age,gender,newPassword,isLoading,error} = props
     return (
@@ -90,6 +90,12 @@ const OptionForm = (props) => {
                     color="primary"
                     disabled={isLoading}>
               {isLoading ? 'Loading...' : 'SAVE'}
+            </Button>
+              <Button className='btn-lg'
+                      type='button'
+                      color='warning'
+                      disabled={isLoading}>
+                {isLoading ? 'Loading...' : 'DELETE ACCOUNT'}
             </Button>
           </div>
         </form>

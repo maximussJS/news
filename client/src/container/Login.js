@@ -53,8 +53,12 @@ class Login extends Component {
        }
        else {
          this.setState({
-           error : 'Invalid login or password'
+           error : 'Invalid login or password',
+           isLoading : false
          })
+         setTimeout(() => this.setState({
+           error : ''
+         }),2000)
        }
      }
      catch (e) {

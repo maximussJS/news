@@ -12,8 +12,8 @@ class Options extends Component {
        password : '',
        newPassword : '',
        country : '',
-       age : null,
-       gender : null,
+       age : 0,
+       gender : 0,
        isLoading : false,
        error : ''
      }
@@ -25,17 +25,25 @@ class Options extends Component {
      this.onAgeChange = this.onAgeChange.bind(this)
      this.onGenderChange = this.onGenderChange.bind(this)
      this.onCountryChange = this.onCountryChange.bind(this)
+     this.onDeleteClick = this.onDeleteClick.bind(this)
    }
 
    async onSubmit() {
      try {
+       await this.setState({
+         isLoading : true
+       })
        const user = getUser()
        const {name,email,country,age,gender,password,newPassword} = this.state
        if(user.name === name && user.email === email && user.country === country
-         && user.age === age && user.gender === gender && password === '') {
+         && user.age === age && +user.gender === gender && password === '') {
          this.setState({
-           error : 'You did not change your account settings'
+           error : 'You did not change your account settings',
+           isLoading : false
          })
+         setTimeout(() => this.setState({
+           error : ''
+         }),2000)
        }
        else {
          let result = {}
@@ -46,10 +54,10 @@ class Options extends Component {
          if(+user.gender !== gender) user.gender = gender
          if(password !== '' && newPassword !== '') result.password = newPassword
          const response = await updateUser(result)
-         alert(response)
          if(response.success) {
            Authenticate(response.token)
-           this.forceUpdate()
+           alert(JSON.stringify(result))
+           this.props.history.push('/')
          }
          else {
            this.setState({
@@ -119,6 +127,10 @@ class Options extends Component {
     })
   }
 
+  onDeleteClick() {
+
+  }
+
   render () {
     return (
       <OptionForm password={this.state.password}
@@ -137,7 +149,8 @@ class Options extends Component {
                   onNewPasswordChange={this.onNewPasswordChange}
                   onAgeChange={this.onAgeChange}
                   onCountryChange={this.onCountryChange}
-                  onGenderChange={this.onGenderChange}/>
+                  onGenderChange={this.onGenderChange}
+                  onDeleteClick={this.onDeleteClick}/>
     )
   }
 }

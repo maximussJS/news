@@ -7,11 +7,11 @@ const {errorResponse} = require('../utils/response')
 router.put('/', async (req,res) => {
    try {
      const user = VerifyToken(req.headers.authorization).user
+     console.log('user : ' + user + ' req : ' + req.body)
      if(!user) return res.status(401).json(errorResponse('Invalid token'))
      else {
-       console.log(JSON.stringify(req.body))
        const result = await User.updateOne({
-         _id : user.id
+         _id : user._id
        }, {
          $set : req.body
        })
@@ -20,7 +20,7 @@ router.put('/', async (req,res) => {
          const token = GenerateToken(result)
          if (!token) return serverError('GenerateToken Error', res)
          else {
-           console.log('result : ' + JSON.stringify(result))
+           console.log('res ' + JSON.stringify(result))
            return res.status(200).json({
              success : true,
              token : token
