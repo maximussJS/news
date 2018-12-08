@@ -15,7 +15,7 @@ class Options extends Component {
        age : 0,
        gender : 0,
        isLoading : false,
-       error : ''
+       error : '',
      }
      this.onSubmit = this.onSubmit.bind(this)
      this.onNameChange = this.onNameChange.bind(this)
@@ -26,6 +26,8 @@ class Options extends Component {
      this.onGenderChange = this.onGenderChange.bind(this)
      this.onCountryChange = this.onCountryChange.bind(this)
      this.onDeleteClick = this.onDeleteClick.bind(this)
+     this.onImageClick = this.onImageClick.bind(this)
+     this.onFileInputChange = this.onFileInputChange.bind(this)
    }
 
    async onSubmit() {
@@ -131,6 +133,12 @@ class Options extends Component {
     })
   }
 
+  onImageClick = () => document.getElementById('file-upload').click()
+
+  onFileInputChange() {
+     setTimeout( () => alert(JSON.stringify(document.getElementById('file-upload').files[0])),2000)
+  }
+
   async onDeleteClick() {
     try {
       await this.setState({
@@ -177,7 +185,9 @@ class Options extends Component {
                   onAgeChange={this.onAgeChange}
                   onCountryChange={this.onCountryChange}
                   onGenderChange={this.onGenderChange}
-                  onDeleteClick={this.onDeleteClick}/>
+                  onDeleteClick={this.onDeleteClick}
+                  onImageClick={this.onImageClick}
+                  onFileInputChange={this.onFileInputChange}/>
     )
   }
 }

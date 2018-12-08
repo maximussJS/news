@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 
 const OptionForm = props => {
   const {onSubmit,onNameChange,onEmailChange,onPasswordChange,onNewPasswordChange,onAgeChange,onCountryChange,
-         onGenderChange,onDeleteClick,name,email,password,country,age,gender,newPassword,isLoading,error} = props
+    onImageClick,onGenderChange,onDeleteClick,name,email,password,country,age,gender,newPassword,isLoading,error,
+    onFileInputChange } = props
     return (
       isLoading ?
         <h1>Loading...</h1> :
@@ -16,7 +17,7 @@ const OptionForm = props => {
         <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-1.jpg"
              className="rounded float-left"
              alt="aligment"
-             onClick={() => alert('change')}/>
+             onClick={() => onImageClick()}/>
         <form className='option-form'
               onSubmit={onSubmit}>
           <MDBInput label='Change name'
@@ -89,7 +90,10 @@ const OptionForm = props => {
             Female
           </FormInline>
           <hr/>
-          {error ? <span className='text-danger h4'>{error}</span> : undefined }
+          {error ?
+            <span className='text-danger h4'>
+                {error}
+            </span> : undefined }
           <div className="text-center">
             <Button className='btn-lg'
                     type="submit"
@@ -106,6 +110,11 @@ const OptionForm = props => {
             </Button>
           </div>
         </form>
+        <MDBInput id='file-upload'
+                  className='red'
+                  type='file'
+                  accept='image/*'
+                  onChange={onFileInputChange}/>
       </Container>
     )
 }
@@ -128,7 +137,9 @@ OptionForm.propTypes = {
   onAgeChange :PropTypes.func.isRequired,
   onCountryChange : PropTypes.func.isRequired,
   onGenderChange : PropTypes.func.isRequired,
-  onDeleteClick : PropTypes.func.isRequired
+  onDeleteClick : PropTypes.func.isRequired,
+  onImageClick : PropTypes.func.isRequired,
+  onFileInputChange : PropTypes.func.isRequired
 }
 
 export default OptionForm
