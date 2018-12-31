@@ -1,6 +1,6 @@
 import re
-from .app import db
 from datetime import datetime
+from .. import db
 
 
 def slugify(s):
