@@ -1,3 +1,4 @@
+import re
 from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
 
@@ -10,6 +11,10 @@ def init_db(a):
     else:
         print('Error to connect Postgres')
         raise Exception('Postgres Error')
+
+
+def slugify(s):
+    return re.sub(r'[^\w+]', '-', s)
 
 
 def success_response(data, message, code):

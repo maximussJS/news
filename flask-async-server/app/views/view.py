@@ -1,4 +1,4 @@
-from app import (app, db)
+from app import app, db
 
 
 @app.route('/', methods=['GET', 'POST'])

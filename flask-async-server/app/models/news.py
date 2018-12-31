@@ -1,14 +1,10 @@
-import re
 from datetime import datetime
 from .. import db
-
-
-def slugify(s):
-    return re.sub(r'[^\w+]', '-', s)
+from ..utils import slugify
 
 
 class New(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(140))
     url = db.Column(db.String(140), unique=True)
     text = db.Column(db.Text)
