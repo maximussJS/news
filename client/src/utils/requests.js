@@ -1,13 +1,13 @@
 import {request} from './request'
 
-export const login = async data => await request('post','/login', data)
+export const login = async data => await request('POST','/auth/login', data)
 
-export const register = async data => await request('post','/register',data)
+export const register = async data => await request('POST','/auth/register',data)
 
-export const getNewsArray = async () => await request('get','/')
+export const getNewsArray = async () => await request('GET','/')
 
-export const getUser = async () => await request('get','/user')
+export const getUser = async () => await request('GET','/users/user')
 
-export const updateUser = async data => await request('put','/update/user',data)
+export const updateUser = async data => await request('PUT','/users/edit',data)
 
-export const deleteUser = async () => await request('delete','/delete/user')
+export const deleteUser = async () => await request('DELETE','/users/delete')

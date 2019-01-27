@@ -1,9 +1,10 @@
 import React,{Component} from 'react'
 import OptionForm from '../components/Options'
-import {getUser,Authenticate,Deauthenticate} from '../utils/auth'
+import {getUser,authenticate,deauthenticate} from '../utils/auth'
 import {updateUser,deleteUser} from '../utils/requests'
 
-class Options extends Component {
+
+export default class Options extends Component {
    constructor (props) {
      super(props)
      this.state = {
@@ -58,7 +59,7 @@ class Options extends Component {
          if(newPassword !== '') result.newPassword = newPassword
          const response = await updateUser(result)
          if(response.success) {
-           Authenticate(response.token)
+           authenticate(response.token)
            this.props.history.push('/')
          }
          else {
@@ -146,7 +147,7 @@ class Options extends Component {
       })
       const response = await deleteUser()
       if(response.success) {
-         Deauthenticate()
+         deauthenticate()
          this.props.history.push('/login')
       }
       else {
@@ -191,5 +192,3 @@ class Options extends Component {
     )
   }
 }
-
-export default Options

@@ -2,7 +2,8 @@ import React,{Component} from 'react'
 import LoginForm from '../components/LoginForm'
 import {withRouter} from 'react-router-dom'
 import {login} from '../utils/requests'
-import {Authenticate} from '../utils/auth'
+import {authenticate} from '../utils/auth'
+
 
 class Login extends Component {
   constructor (props) {
@@ -48,7 +49,7 @@ class Login extends Component {
          password : this.state.password
        })
        if(response.success) {
-         Authenticate(response.token)
+         authenticate(response.token)
          this.props.history.push('/')
        }
        else {

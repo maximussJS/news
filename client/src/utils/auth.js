@@ -1,8 +1,8 @@
 import decode from 'jwt-decode'
 
-export const Authenticate = token => localStorage.setItem('token', token)
+export const authenticate = token => localStorage.setItem('token', token)
 
-export const Deauthenticate = () => localStorage.removeItem('token')
+export const deauthenticate = () => localStorage.removeItem('token')
 
 export const getToken = () => localStorage.getItem('token')
 

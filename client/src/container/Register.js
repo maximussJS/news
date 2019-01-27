@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import RegisterForm from '../components/RegisterForm'
 import {withRouter} from 'react-router-dom'
 import {register} from '../utils/requests'
-import {Authenticate} from '../utils/auth'
+
 
 class Register extends Component {
   constructor(props) {
@@ -40,16 +40,12 @@ class Register extends Component {
           password : this.state.password,
           age : this.state.age,
           country : this.state.country,
-          gender : this.state.radio
+          gender : this.state.radio === 1
         })
-        if(response.success) {
-          Authenticate(response.token)
-          this.props.history.push('/')
-        }
-        else this.setState({
-            error : response.message
-          })
-        }
+        response.success ? this.props.history.push('/login') : this.setState({
+          error : response.message
+        })
+      }
       catch (e) {
         this.setState({
           error : e.message

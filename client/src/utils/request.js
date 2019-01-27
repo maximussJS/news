@@ -13,7 +13,7 @@ export const request = (method, path, data ) => new Promise( (resolve,reject) =>
     method: method,
     headers: headers
   }
-  fetch(`http://localhost:3000${path}`, options)
+  fetch(`http://127.0.0.1:5000${path}`, options)
     .then(response => response.json().then(json => resolve(json)))
     .catch(e => reject(e))
 })
@@ -30,7 +30,7 @@ export const requestFile = (method, path, data ) => new Promise( (resolve,reject
       body: JSON.stringify(data),
       headers: headers
   }
-  fetch(`http://localhost:5000${path}`, options)
+  fetch(`http://127.0.0.1:5000${path}`, options)
     .then(response => response.json().then(json => resolve(json)))
     .catch(e => reject(e))
 })

@@ -8,6 +8,7 @@ import Profile from '../container/Profile'
 import Options from '../container/Options'
 import '../index.css'
 
+
 const App = () => {
     return (
         <Layout>
@@ -21,5 +22,6 @@ const App = () => {
         </Layout>
     )
 }
+
 
 export default App;

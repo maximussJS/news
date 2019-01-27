@@ -2,7 +2,8 @@ import React,{Component} from 'react'
 import {getNewsArray} from '../utils/requests'
 import ContentComponent from '../components/Content'
 
-class Content extends Component {
+
+export default class Content extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -44,5 +45,3 @@ class Content extends Component {
     )
   }
 }
-
-export default Content
