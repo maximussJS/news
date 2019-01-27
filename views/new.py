@@ -1,6 +1,8 @@
 from flask import Blueprint
 from flask import request
 from models.news import New
+from models.users import User
+from utils.helpers import verify_password_hash
 from utils.responses import success_response, server_error_response, failure_response
 
 
@@ -9,34 +11,50 @@ new = Blueprint('News', __name__)
 
 @new.route('/', methods=['GET'])
 def get_news():
-        q = request.args.get('q')
-        page = request.args.get('page')
-        if page and page.isdigit():
-            page = int(page)
+    q = request.args.get('q')
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+    try:
+        if q:
+            n = New.query.filter(New.title.contains(q) | New.text.contains(q))
         else:
-            page = 1
-        try:
-            if q:
-                n = New.query.filter(New.title.contains(q) | New.text.contains(q))
-            else:
-                n = New.query.order_by(New.created.desc())
-            pages = n.paginate(page=page, per_page=9)
-            return success_response(pages, 'OK', 200)
-        except SystemError:
-            return server_error_response()
+            n = New.query.order_by(New.created.desc())
+        pages = n.paginate(page=page, per_page=9)
+        return success_response(pages, 'OK', 200)
+    except Exception as e:
+        return server_error_response(e)
 
 
 @new.route('/create', methods=['POST', 'GET'])
 def create_new():
-        if request.method == 'POST':
-            title = request.form['title']
-            text = request.form['text']
-            try:
-                n = New(title=title, text=text)
+    if request.method == 'GET':
+        return success_response('OK', 200)
+    form = request.get_json()
+    if form['title'] is None or len(form['title']) < 4:
+        return failure_response('Invalid title length', 400)
+    if form['text'] is None or len(form['text']) < 15:
+        return failure_response('Invalid text length', 400)
+    if form['name'] is None or 8 > len(form['name']) > 20:
+        return failure_response('Invalid name length', 400)
+    if form['email'] is None or 8 > len(form['email']) > 20:
+        return failure_response('Invalid email length', 400)
+    if form['password'] is None or 8 > len(form['password']) > 20:
+        return failure_response('Invalid password length', 400)
+    try:
+        user = User.query.filter(User.email == form['email']).first()
+        if user is not None and verify_password_hash(user.password, form['password']):
+            match_new = New.query.filter(New.title == form['title']).first()
+            if match_new is None:
+                n = New(title=form['title'], text=form['title'], name=user.name, email=user.email)
                 n.save()
-                return success_response(n, 'Ok', 200)
-            except ValueError:
-                return server_error_response()
+                return success_response(f"Post {n.title} was created!", 201)
+            return failure_response(f"Post with title {form['title']} is already exists", 400)
+        return failure_response('Invalid email or password', 400)
+    except Exception as e:
+        return server_error_response(e)
 
 
 @new.route('/<url>/edit', methods=['POST,GET'])

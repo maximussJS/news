@@ -4,7 +4,7 @@ export const login = async data => await request('POST','/auth/login', data)
 
 export const register = async data => await request('POST','/auth/register',data)
 
-export const getNewsArray = async () => await request('GET','/')
+export const getNewsArray = async () => await request('GET','/news/')
 
 export const getUser = async () => await request('GET','/users/user')
 

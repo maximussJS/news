@@ -9,14 +9,18 @@ class New(db.Model):
     title = db.Column(db.String(140))
     url = db.Column(db.String(140), unique=True)
     text = db.Column(db.Text)
+    author_name = db.Column(db.String(20))
+    author_email = db.Column(db.String(20))
     created = db.Column(db.DateTime, default=datetime.now())
     image_url = db.Column(db.String(50))
     tags = db.Column(db.String(10))
     # tags = db.relationship('Tag', secondary='news_tags', backref=db.backref('news', lazy='dynamic'))
 
-    def __init__(self, title, text, image_url='str'):
+    def __init__(self, title, text, name, email, image_url='str'):
         self.title = title
         self.text = text
+        self.author_name = name
+        self.author_email = email
         self.image_url = image_url
         self.generate_url()
 
@@ -24,10 +28,10 @@ class New(db.Model):
         if self.title:
             self.url = slugify(self.title)
         else:
-            self.url = slugify('asdasd qwe qw')
+            self.url = slugify(self.author_email)
 
     def __repr__(self):
-        return '<New id: {}, title: {}>'.format(self.id, self.title)
+        return f'<New title "{self.title}" written by {self.author_name}>'
 
     def save(self):
         db.session.add(self)
@@ -38,8 +42,5 @@ class New(db.Model):
         db.session.commit()
 
     def to_json(self):
-        return dict(title=self.title, text=self.text, created=self.created,
-                    image_url=self.image_url, url=self.url, tags=self.tags)
-
-
-
+        return dict(title=self.title, text=self.text, name=self.author_name, email=self.author_email,
+                    url=self.url, tags=self.tags, created=self.created, image_url=self.image_url)
