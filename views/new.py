@@ -30,9 +30,6 @@ def create_new():
     if request.method == 'GET':
         return success_response('OK', 200)
     form = request.get_json()
-    print(request.headers)
-    print(request.data)
-    print(form)
     if form['title'] is None or 40 < len(form['title']) < 4:
         return failure_response('Invalid title length', 400)
     if form['text'] is None or len(form['text']) < 15:
@@ -43,14 +40,15 @@ def create_new():
         return failure_response('Invalid email length', 400)
     if form['password'] is None or 8 > len(form['password']) > 20:
         return failure_response('Invalid password length', 400)
-    if form['image'] is None:
-        return failure_response('You cannot write post without image', 400)
+    if form['image'] is None or len(form['image']) < 10:
+        return failure_response('Failed to upload image', 400)
     try:
         user = User.query.filter(User.email == form['email']).first()
         if user is not None and verify_password_hash(user.password, form['password']):
             match_new = New.query.filter(New.title == form['title']).first()
             if match_new is None:
-                n = New(title=form['title'], text=form['text'], name=user.name, email=user.email)
+                n = New(title=form['title'], text=form['text'], name=user.name,
+                        email=user.email, image_url=form['image'])
                 n.save()
                 return success_response(f"Post {n.title} was created!", 201)
             return failure_response(f"Post with title {form['title']} is already exists", 400)

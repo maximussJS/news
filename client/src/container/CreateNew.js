@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import {getUser,getPassword,isAuthenticated} from '../utils/auth'
-import {createNew as create} from '../utils/requests'
+import {createNew as create, uploadNewImage} from '../utils/requests'
 import Form from '../components/CreateNewForm'
 
 
@@ -52,13 +52,15 @@ export default class CreateNew extends Component {
                 this.setState({
                     isLoading : true
                 })
-               const response = await create({
+                const url = await uploadNewImage(image)
+                alert(url)
+                const response = await create({
                    title : title,
                    text : text,
                    name : name,
                    email : email,
                    password : password
-                }, image)
+                })
                 response.success ? this.props.history.push('/') : this.setState({
                     error : response.message,
                     isLoading : false

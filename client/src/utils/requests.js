@@ -1,4 +1,4 @@
-import {request,requestWithFile} from './request'
+import {request,requestFile} from './request'
 
 export const login = async data => await request('POST','/auth/login', data)
 
@@ -12,4 +12,6 @@ export const updateUser = async data => await request('PUT','/users/edit',data)
 
 export const deleteUser = async () => await request('DELETE','/users/delete')
 
-export const createNew = async (obj,file) => await requestWithFile('POST','/news/create', obj, file)
+export const createNew = async data => await request('POST','/news/create', data)
+
+export const uploadNewImage = async file => await requestFile('POST','/upload', file)
