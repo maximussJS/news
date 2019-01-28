@@ -23,6 +23,7 @@ class New(db.Model):
         self.author_email = email
         self.image_url = image_url
         self.generate_url()
+        self.tags = ['tag']
 
     def generate_url(self):
         if self.title:

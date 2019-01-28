@@ -4,44 +4,46 @@ import ContentComponent from '../components/Content'
 
 
 export default class Content extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      news : null,
-      isLoading: false,
-      error: null
+    constructor (props) {
+        super(props)
+        this.state = {
+            news : null,
+            isLoading: false,
+            error: null
+        }
     }
-  }
 
-  componentDidMount () {
-    if(!this.state.isLoading) {
-      this.setState({
-        isLoading: true
-      }, async () => {
-          try {
-            const result = await getNewsArray()
-            await this.setState({
-              news: result.news,
-              isLoading: false
-            })
-          }
-          catch(e) {
+    componentDidMount () {
+        if(!this.state.isLoading) {
             this.setState({
-              isLoading: false,
-              error: e
-            })
-          }
-       }
-      )
+                    isLoading: true
+                }, async () => {
+                    try {
+                        const response = await getNewsArray()
+                        response.success ? this.setState({
+                            news: response.data,
+                            isLoading: false
+                        }) : this.setState({
+                            error : response.message,
+                            isLoading : false
+                        })
+                    }
+                    catch(e) {
+                        this.setState({
+                            isLoading: false,
+                            error: e.message
+                        })
+                    }
+                }
+            )
+        }
     }
-  }
 
-  render () {
-    const {news,isLoading,error} = this.state
-    return (
-      <ContentComponent items={news}
-                        loading={isLoading}
-                        error={error}/>
-    )
-  }
+    render () {
+        return (
+            <ContentComponent items={this.state.news}
+                              loading={this.state.isLoading}
+                              error={this.state.error}/>
+        )
+    }
 }

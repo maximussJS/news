@@ -5,10 +5,10 @@ import PropTypes from 'prop-types'
 
 const LoginForm = ({
     onSubmit,
-    onLoginChange,
+    onEmailChange,
     onPasswordChange,
     onReset,
-    login,
+    email,
     password,
     isLoading,
     error
@@ -24,11 +24,11 @@ const LoginForm = ({
                        group type="email"
                        validate error="wrong"
                        success="right"
-                       onChange={onLoginChange}
+                       onChange={onEmailChange}
                        required
                        maxLength='20'
                        minLength='8'
-                       value={login}>
+                       value={email}>
                 </Input>
                 <Input label="Type Your Password"
                        icon="lock"
@@ -68,10 +68,10 @@ const LoginForm = ({
 
 LoginForm.propTypes = {
   onSubmit : PropTypes.func.isRequired,
-  onLoginChange : PropTypes.func.isRequired,
+  onEmailChange : PropTypes.func.isRequired,
   onPasswordChange : PropTypes.func.isRequired,
   onReset : PropTypes.func.isRequired,
-  login : PropTypes.string.isRequired,
+  email : PropTypes.string.isRequired,
   password : PropTypes.string.isRequired,
   isLoading : PropTypes.bool.isRequired,
   error : PropTypes.string.isRequired

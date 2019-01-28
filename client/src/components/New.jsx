@@ -4,24 +4,22 @@ import PropTypes from 'prop-types'
 
 
 const New = ({
-   image,
-   title,
-   text,url
+   item
 }) =>
     <Col>
         <Card className='card-style'>
             <CardImage className="img-fluid"
-                       src={image}
+                       src={item.image}
                        waves/>
             <CardBody>
                 <CardTitle>
-                    <h1>{title}</h1>
+                    <h1>{item.title}</h1>
                 </CardTitle>
                 <CardText>
-                    <h2>{text}</h2>
+                    <h2>{item.text}</h2>
                 </CardText>
                 <Button className='btn-lg btn-info'
-                        href={url}>
+                        href={`/news/${item.url}`}>
                     Read more
                 </Button>
             </CardBody>

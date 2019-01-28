@@ -81,3 +81,8 @@ hr {
 .footer-color {
     background-color: #221AFF;
 }
+
+.create-form {
+    margin: 10px 1px 10px 360px;
+    width: 20%;
+}

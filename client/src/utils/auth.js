@@ -9,3 +9,5 @@ export const getToken = () => localStorage.getItem('token')
 export const isAuthenticated = () => localStorage.getItem('token') !== null
 
 export const getUser = () => decode(getToken()).user
+
+export const getPassword = () => decode(getToken()).password

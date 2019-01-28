@@ -1,10 +1,12 @@
 from flask import Blueprint
 from flask import request
+from config import Cloud
 from models.news import New
 from models.users import User
+from cloudinary.uploader import upload
+from cloudinary.utils import cloudinary_url
 from utils.helpers import verify_password_hash
 from utils.responses import success_response, server_error_response, failure_response
-
 
 new = Blueprint('News', __name__)
 
@@ -13,17 +15,12 @@ new = Blueprint('News', __name__)
 def get_news():
     q = request.args.get('q')
     page = request.args.get('page')
-    if page and page.isdigit():
-        page = int(page)
-    else:
-        page = 1
     try:
         if q:
-            n = New.query.filter(New.title.contains(q) | New.text.contains(q))
+            news = New.query.filter(New.title.contains(q) | New.text.contains(q))
         else:
-            n = New.query.order_by(New.created.desc())
-        pages = n.paginate(page=page, per_page=9)
-        return success_response(pages, 'OK', 200)
+            news = New.query.order_by(New.created.desc())
+        return success_response('OK', 200, data=list(map(lambda n: n.to_json(), news)))
     except Exception as e:
         return server_error_response(e)
 
@@ -33,7 +30,10 @@ def create_new():
     if request.method == 'GET':
         return success_response('OK', 200)
     form = request.get_json()
-    if form['title'] is None or len(form['title']) < 4:
+    print(request.headers)
+    print(request.data)
+    print(form)
+    if form['title'] is None or 40 < len(form['title']) < 4:
         return failure_response('Invalid title length', 400)
     if form['text'] is None or len(form['text']) < 15:
         return failure_response('Invalid text length', 400)
@@ -43,12 +43,14 @@ def create_new():
         return failure_response('Invalid email length', 400)
     if form['password'] is None or 8 > len(form['password']) > 20:
         return failure_response('Invalid password length', 400)
+    if form['image'] is None:
+        return failure_response('You cannot write post without image', 400)
     try:
         user = User.query.filter(User.email == form['email']).first()
         if user is not None and verify_password_hash(user.password, form['password']):
             match_new = New.query.filter(New.title == form['title']).first()
             if match_new is None:
-                n = New(title=form['title'], text=form['title'], name=user.name, email=user.email)
+                n = New(title=form['title'], text=form['text'], name=user.name, email=user.email)
                 n.save()
                 return success_response(f"Post {n.title} was created!", 201)
             return failure_response(f"Post with title {form['title']} is already exists", 400)
@@ -79,3 +81,5 @@ def get_new_by_url(url):
             return failure_response('Error, no such new', 404)
     except ValueError:
         return server_error_response()
+
+
