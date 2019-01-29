@@ -22,7 +22,8 @@ const CreateNew = ({
             <h1 className='text-center'>
               Create new post
             </h1>
-              <form className='create-form col-4'>
+              <form className='create-form col-4'
+                    encType='multipart/form-data'>
                   <hr/>
                   <MDBInput label='Enter title'
                             size='lg'

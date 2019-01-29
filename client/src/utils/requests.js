@@ -1,6 +1,6 @@
 import {request,requestFile} from './request'
 
-export const login = async data => await request('POST','/auth/login', data)
+export const login = async data => await request('POST','/login', data)
 
 export const register = async data => await request('POST','/auth/register',data)
 

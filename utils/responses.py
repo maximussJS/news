@@ -1,22 +1,24 @@
-from flask import jsonify
-from .helpers import cross_domain
+from aiohttp.web import json_response, Response
 
 
-@cross_domain(origin='localhost', headers=['access-control-allow-origin', 'Content-Type'])
-def success_response(message, code, data=None, token=None):
-    if token is not None:
-        return jsonify(success=True, message=message, token=token), code
+def response(code: int, text: str) -> Response:
+    r = Response(status=code, text=text)
+    return r
+
+
+def success_response(code: int, text: str, data=None, token=None) -> json_response:
     if data is not None:
-        return jsonify(success=True, message=message, data=data), code
-    return jsonify(success=True, message=message), code
+        return json_response(dict(success=True, data=data, text=text), status=code)
+    elif token is not None:
+        return json_response(dict(success=True, token=str(token, 'utf-8'), text=text), status=code)
+    else:
+        return json_response(dict(success=True, text=text), status=code)
 
 
-@cross_domain(origin='localhost', headers=['access-control-allow-origin', 'Content-Type'])
-def failure_response(message, code):
-    return jsonify(success=False, message=message), code
+def failure_response(code: int, text: str) -> json_response:
+    return json_response(dict(success=False, text=text), status=code)
 
 
-@cross_domain(origin='localhost', headers=['access-control-allow-origin', 'Content-Type'])
-def server_error_response(error):
+def server_error_response(error: str) -> json_response:
     print(error)
-    return jsonify(success=False, message='Internal Server Error'), 500
+    return json_response(dict(success=False, text='Something went wrong...'), status=500)
