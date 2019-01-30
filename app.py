@@ -4,10 +4,12 @@ from aiohttp_cors import ResourceOptions, setup as cors_setup
 from aiojobs.aiohttp import setup as job_setup
 from config import SQLALCHEMY_DATABASE_URI
 from views.login import login
+from views.register import register
 
 
 def setup_routes(app: Application):
     app.add_routes(login)
+    app.add_routes(register)
 
 
 async def engine_pool(app: Application):

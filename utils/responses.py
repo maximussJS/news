@@ -19,6 +19,6 @@ def failure_response(code: int, text: str) -> json_response:
     return json_response(dict(success=False, text=text), status=code)
 
 
-def server_error_response(error: str) -> json_response:
+def server_error_response(error: Exception) -> json_response:
     print(error)
     return json_response(dict(success=False, text='Something went wrong...'), status=500)

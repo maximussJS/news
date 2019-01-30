@@ -1,11 +1,17 @@
-from app import db
+from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from config import SQLALCHEMY_DATABASE_URI
 
 
-class Role(db.Model):
+engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
+base = declarative_base()
+
+
+class Role(base):
     __tablename__ = 'roles'
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    name = db.Column(db.String(20), unique=True)
-    description = db.Column(db.String(255))
+    id = Column(Integer(), primary_key=True, autoincrement=True)
+    name = Column(String(20), unique=True)
+    description = Column(String(255))
 
     def __init__(self, name, description):
         self.name = name
@@ -14,13 +20,8 @@ class Role(db.Model):
     def __repr__(self):
         return f'<Role {self.name}>'
 
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def remove(self):
-        db.session.delete(self)
-        db.session.commit()
-
     def to_json(self):
         return dict(name=self.name, description=self.description)
+
+
+base.metadata.create_all(engine)

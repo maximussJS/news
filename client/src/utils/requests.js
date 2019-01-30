@@ -2,7 +2,7 @@ import {request,requestFile} from './request'
 
 export const login = async data => await request('POST','/login', data)
 
-export const register = async data => await request('POST','/auth/register',data)
+export const register = async data => await request('POST','/register',data)
 
 export const getNewsArray = async () => await request('GET','/news/')
 
