@@ -12,6 +12,6 @@ export const updateUser = async data => await request('PUT','/users/edit',data)
 
 export const deleteUser = async () => await request('DELETE','/users/delete')
 
-export const createNew = async data => await request('POST','/news/create', data)
+export const createNew = async data => await request('POST','/new', data)
 
 export const uploadNewImage = async file => await requestFile('POST','/upload', file)

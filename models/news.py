@@ -14,11 +14,11 @@ class New(base):
     id = Column(Integer(), primary_key=True, autoincrement=True)
     title = Column(String(60))
     url = Column(String(60), unique=True)
-    text = Column(String(200))
+    text = Column(String(1000))
     author_name = Column(String(20))
     author_email = Column(String(20))
     created = Column(DateTime, default=datetime.now())
-    image_url = Column(String(50))
+    image_url = Column(String(100))
     tags = Column(String(10))
     # tags = db.relationship('Tag', secondary='news_tags', backref=db.backref('news', lazy='dynamic'))
 
@@ -29,6 +29,7 @@ class New(base):
         self.author_email = email
         self.image_url = image_url
         self.generate_url()
+        self.created = datetime.now()
         self.tags = ['tag']
 
     def generate_url(self):

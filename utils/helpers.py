@@ -1,5 +1,5 @@
 from re import sub
-from jwt import encode
+from jwt import encode, decode
 from bcrypt import checkpw, hashpw, gensalt
 from config import SECRET_KEY
 
@@ -17,7 +17,18 @@ def compare(password_hash: str, form_password: str) -> bool:
 
 
 def generate_token(payload: dict) -> str:
-    return encode(payload=payload, key=SECRET_KEY, algorithm='HS256')
+    return str(encode(payload=payload, key=SECRET_KEY, algorithm='HS256'), 'utf-8')
+
+
+def is_valid_token(token: str) -> bool:
+    try:
+        return True if 'password' in decode(token, key=SECRET_KEY, algorithms='HS256') else False
+    except Exception:
+        return False
+
+
+def get_user_from_token(token: str) -> dict:
+    return decode(token, key=SECRET_KEY, algorithms='HS256')['user']
 
 
 def user_tuple_to_json(u: tuple) -> dict:

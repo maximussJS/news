@@ -3,7 +3,6 @@ import {getToken} from './auth'
 
 export const request = (method,path,data) => new Promise((resolve,reject) => {
     const headers = new Headers()
-    headers.append('Content-Type', 'application/json')
     headers.append('Authorization',`${getToken()}`)
     const options = data ? {
         method: method,

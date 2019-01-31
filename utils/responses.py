@@ -5,7 +5,7 @@ def success_response(code: int, text: str, data=None, token=None) -> json_respon
     if data is not None:
         return json_response(dict(success=True, data=data, text=text), status=code)
     elif token is not None:
-        return json_response(dict(success=True, token=str(token, 'utf-8'), text=text), status=code)
+        return json_response(dict(success=True, token=token, text=text), status=code)
     else:
         return json_response(dict(success=True, text=text), status=code)
 

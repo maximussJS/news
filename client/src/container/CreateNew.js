@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {getUser,getPassword,isAuthenticated} from '../utils/auth'
+import {getPassword,isAuthenticated} from '../utils/auth'
 import {createNew as create, uploadNewImage} from '../utils/requests'
 import Form from '../components/CreateNewForm'
 
@@ -10,9 +10,6 @@ export default class CreateNew extends Component {
         this.state = {
             title : '',
             text : '',
-            name : '',
-            email : '',
-            password : '',
             image : null,
             error : '',
             isLoading : false,
@@ -24,21 +21,14 @@ export default class CreateNew extends Component {
     }
 
     componentDidMount() {
-        if(isAuthenticated() && getPassword() !== '') {
-            const user = getUser()
-            const password = getPassword()
-            this.setState({
-                name : user.name,
-                email : user.email,
-                password : password
-            })
-        }
-        else this.props.history.push('/login')
+        isAuthenticated() && getPassword() !== '' ? this.setState({
+           isLoading : false
+        }) : this.props.history.push('/login')
     }
 
     onSubmit = async () => {
         try {
-            const {title,text,name,email,password,image} = this.state
+            const {title,text,image} = this.state
             if(title.length < 4) this.setState({
                 error : 'Invalid title length'
             })
@@ -52,19 +42,19 @@ export default class CreateNew extends Component {
                 this.setState({
                     isLoading : true
                 })
-                const url = await uploadNewImage(image)
-                alert(url)
-                // const response = await create({
-                //    title : title,
-                //    text : text,
-                //    name : name,
-                //    email : email,
-                //    password : password
-                // })
-                // response.success ? this.props.history.push('/') : this.setState({
-                //     error : response.message,
-                //     isLoading : false
-                // })
+                const result = await uploadNewImage(image)
+                if(result.success) {
+                    const response = await create({
+                        title: title,
+                        text: text,
+                        url: result.data
+                    })
+                    response.success ? this.props.history.push('/') : this.setState({
+                        error: response.message,
+                        isLoading: false
+                    })
+                }
+                else this.props.history.push('/login')
             }
         }
         catch (e) {
