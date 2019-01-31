@@ -24,7 +24,19 @@ def select_from_news_where_title(title: str) -> str:
     return f"SELECT * FROM news WHERE title = '{title}';"
 
 
+def select_from_news_where_author_and_title(email: str, title: str) -> str:
+    return f"SELECT * FROM news WHERE author_email = '{email}' AND title = '{title}';"
+
+
+def select_from_news_where_url(url: str) -> str:
+    return f"SELECT * FROM news WHERE url = '{url}';"
+
+
 def insert_new_post(n: New) -> str:
     return f'''INSERT INTO news (title, text, url, author_name, author_email, created, image_url)
                VALUES ('{n.title}', '{n.text}', '{n.url}', '{n.author_name}', '{n.author_email}',
                        '{n.created}', '{n.image_url}');'''
+
+
+def delete_new_by_title(title: str) -> str:
+    return f"DELETE * FROM news WHERE title = '{title}'"

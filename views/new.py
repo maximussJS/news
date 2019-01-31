@@ -1,9 +1,11 @@
 from aiohttp.web import View, RouteTableDef, json_response
 from aiohttp_cors import CorsViewMixin
 from models.news import New as New_Model
-from utils.helpers import is_valid_token, get_user_from_token
+from utils.helpers import is_valid_token, get_user_from_token, new_tuple_to_json
 from utils.responses import success_response, failure_response, server_error_response
-from utils.queries import select_from_news_where_title, select_from_users_where_email, insert_new_post
+from utils.queries import select_from_news_where_title, select_from_users_where_email, insert_new_post, \
+                          select_from_news_where_url, select_from_news_where_author_and_title as find, \
+                          delete_new_by_title
 
 
 new = RouteTableDef()
@@ -12,7 +14,22 @@ new = RouteTableDef()
 @new.view('/new')
 class New(View, CorsViewMixin):
     async def get(self) -> json_response:
-        return success_response(200, 'Ok')
+        try:
+            url = self.request.rel_url.query['url']
+            if url is not None:
+                if len(url) < 4:
+                    return failure_response(400, 'Invalid url length')
+                pool = self.request.app['pool']
+                async with pool.acquire() as conn:
+                    async with conn.cursor() as c:
+                        await c.execute(select_from_news_where_url(url))
+                        n = await c.fetchone()
+                        if n is not None:
+                            return success_response(200, 'OK', data=new_tuple_to_json(n))
+                        return failure_response(400, f"No such post on url : '{url}'")
+            return success_response(200, 'OK')
+        except Exception as e:
+            server_error_response(e)
 
     async def post(self) -> json_response:
         try:
@@ -46,5 +63,32 @@ class New(View, CorsViewMixin):
                                     return success_response(201, f'Post {post.title} was created!')
                                 return failure_response(400, f"Post with title {form['title']} already exist")
                             return failure_response(401, 'No such user')
+                return failure_response(401, 'Authorize please')
+            return failure_response(401, 'Authorize please')
+        except Exception as e:
+            return server_error_response(e)
+
+    async def delete(self) -> json_response:
+        try:
+            if 'Authorization' in self.request.headers:
+                token = self.request.headers['Authorization']
+                if token is not None and is_valid_token(token):
+                    title = self.request.rel_url.query['title']
+                    if title is not None:
+                        if len(title) < 4:
+                            return failure_response(400, 'Invalid title length')
+                        user = get_user_from_token(token)
+                        pool = self.request.app['pool']
+                        async with pool.acquire() as conn:
+                            async with conn.cursor() as c:
+                                await c.execute(find(user['email'], title))
+                                n = await c.fetchone()
+                                if n is not None:
+                                    await c.execute(delete_new_by_title(title))
+                                    return success_response(200, f'Post {title} was deleted')
+                                return failure_response(400, f"No such post with title : {title}")
+                    return failure_response(400, 'No url parameter')
+                return failure_response(401, 'Authorize please')
+            return failure_response(401, 'Authorize please')
         except Exception as e:
             return server_error_response(e)
