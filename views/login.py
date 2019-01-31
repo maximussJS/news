@@ -10,9 +10,6 @@ login = RouteTableDef()
 
 @login.view('/login')
 class Login(View, CorsViewMixin):
-    async def get(self) -> json_response:
-        return success_response(200, 'OK')
-
     async def post(self) -> json_response:
         try:
             form = await self.request.json()

@@ -23,3 +23,8 @@ def generate_token(payload: dict) -> str:
 def user_tuple_to_json(u: tuple) -> dict:
     return dict(name=u[1], email=u[2], active=u[4], ava_url=u[5],
                 age=u[6], country=u[7], gender=u[8], role=u[9])
+
+
+def new_tuple_to_json(n: tuple) -> dict:
+    return dict(title=n[1], url=n[2], text=n[3], name=n[4],
+                email=n[5], created=str(n[6]), image=n[7], tags=n[8])

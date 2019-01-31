@@ -54,17 +54,17 @@ export default class CreateNew extends Component {
                 })
                 const url = await uploadNewImage(image)
                 alert(url)
-                const response = await create({
-                   title : title,
-                   text : text,
-                   name : name,
-                   email : email,
-                   password : password
-                })
-                response.success ? this.props.history.push('/') : this.setState({
-                    error : response.message,
-                    isLoading : false
-                })
+                // const response = await create({
+                //    title : title,
+                //    text : text,
+                //    name : name,
+                //    email : email,
+                //    password : password
+                // })
+                // response.success ? this.props.history.push('/') : this.setState({
+                //     error : response.message,
+                //     isLoading : false
+                // })
             }
         }
         catch (e) {

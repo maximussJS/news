@@ -10,7 +10,10 @@ def select_all_users() -> str:
 
 
 def insert_new_user(u: User) -> str:
-    print(u.password)
     return f'''INSERT INTO users (name, email, password, age, country, role, gender, active, ava_url)
                VALUES ( '{u.name}', '{u.email}', '{u.password}', {u.age}, '{u.country}',
                         '{u.role}', {u.gender}, {u.active}, '{u.ava_url}' );'''
+
+
+def select_all_news() -> str:
+    return 'SELECT * FROM news;'

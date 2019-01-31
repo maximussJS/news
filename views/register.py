@@ -2,7 +2,7 @@ from aiohttp.web import RouteTableDef, View, json_response
 from aiohttp_cors import CorsViewMixin
 from models.users import User
 from utils.responses import success_response, server_error_response, failure_response
-from utils.queries import select_from_users_where_email, insert_new_user, select_all_users
+from utils.queries import select_from_users_where_email, insert_new_user
 from utils.helpers import crypt_password
 
 
@@ -11,9 +11,6 @@ register = RouteTableDef()
 
 @register.view('/register')
 class Register(View, CorsViewMixin):
-    async def get(self) -> json_response:
-        return success_response(200, 'OK')
-
     async def post(self) -> json_response:
         try:
             form = await self.request.json()

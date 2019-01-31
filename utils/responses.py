@@ -1,9 +1,4 @@
-from aiohttp.web import json_response, Response
-
-
-def response(code: int, text: str) -> Response:
-    r = Response(status=code, text=text)
-    return r
+from aiohttp.web import json_response
 
 
 def success_response(code: int, text: str, data=None, token=None) -> json_response:
