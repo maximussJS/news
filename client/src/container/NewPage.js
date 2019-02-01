@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import Page from '../components/NewPage'
+import EditNew from '../container/EditNew'
 import {getNew, deleteNew} from '../utils/requests'
 import {isAuthenticated, getPassword, getUserEmail, isAdmin} from '../utils/auth'
 
@@ -11,7 +12,8 @@ export default class NewPage extends Component {
             item : '',
             error : '',
             isLoading : false,
-            isAuthor : false
+            isAuthor : false,
+            showEditPage : false
         }
         this.onEditClick = this.onEditClick.bind(this)
         this.onDeleteClick = this.onDeleteClick.bind(this)
@@ -48,7 +50,9 @@ export default class NewPage extends Component {
     }
 
     onEditClick(e) {
-        alert(this.state.item)
+        this.setState(state => ({
+            showEditPage : !state.showEditPage
+        }))
     }
 
     onDeleteClick = async () => {
@@ -71,13 +75,20 @@ export default class NewPage extends Component {
     }
 
     render() {
+        const {showEditPage,item,error,isLoading,isAuthor} = this.state
         return (
-            <Page item={this.state.item}
-                  error={this.state.error}
-                  isLoading={this.state.isLoading}
-                  isAuthor={this.state.isAuthor}
-                  onDeleteClick={this.onDeleteClick}
-                  onEditClick={this.onEditClick}/>
+            <div>
+                { showEditPage ?
+                    <EditNew item={item}
+                             onBackClick={this.onEditClick}/> :
+                    <Page item={item}
+                          error={error}
+                          isLoading={isLoading}
+                          isAuthor={isAuthor}
+                          onDeleteClick={this.onDeleteClick}
+                          onEditClick={this.onEditClick}/>
+                }
+            </div>
         )
     }
 }

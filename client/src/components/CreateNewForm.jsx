@@ -41,7 +41,7 @@ const CreateNew = ({
                             onChange={onTextChange}/>
                   <hr/>
                   <MDBInput type='file'
-                            icon='user'
+                            icon='camera'
                             onChange={onImageChange}/>
                   <hr/>
                   {error ?

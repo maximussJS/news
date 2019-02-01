@@ -76,7 +76,8 @@ export default class Options extends Component {
         }
         catch (e) {
             this.setState({
-                error : e.message
+                error : e.message,
+                isLoading : false
             })
         }
     }
@@ -162,7 +163,8 @@ export default class Options extends Component {
         }
         catch (e) {
             this.setState({
-                error : e.message
+                error : e.message,
+                isLoading : false
             })
         }
     }

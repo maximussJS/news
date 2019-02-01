@@ -38,5 +38,10 @@ def insert_new_post(n: New) -> str:
                        '{n.created}', '{n.image_url}');'''
 
 
+def update_news_where(n: dict, old_title: str) -> str:
+    return f'''UPDATE news SET title='{n['title']}', text='{n['text']}', image_url='{n['image']}'
+               WHERE title = '{old_title}' ;'''
+
+
 def delete_new_by_title(title: str) -> str:
     return f"DELETE FROM news WHERE title = '{title}'"

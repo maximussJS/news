@@ -5,7 +5,7 @@ from utils.helpers import is_valid_token, get_user_from_token, new_tuple_to_json
 from utils.responses import success_response, failure_response, server_error_response
 from utils.queries import select_from_news_where_title, select_from_users_where_email, insert_new_post, \
                           select_from_news_where_url, select_from_news_where_author_and_title as find, \
-                          delete_new_by_title
+                          delete_new_by_title, update_news_where
 
 
 new = RouteTableDef()
@@ -63,6 +63,33 @@ class New(View, CorsViewMixin):
                                     return success_response(201, f'NewPage {post.title} was created!')
                                 return failure_response(400, f"NewPage with title {form['title']} already exist")
                             return failure_response(401, 'No such user')
+                return failure_response(401, 'Authorize please')
+            return failure_response(401, 'Authorize please')
+        except Exception as e:
+            return server_error_response(e)
+
+    async def put(self) -> json_response:
+        try:
+            if 'Authorization' in self.request.headers:
+                token = self.request.headers['Authorization']
+                if token is not None and is_valid_token(token):
+                    form = await self.request.json()
+                    if len(form['edit'].items()) == 0:
+                        return failure_response(400, 'Nothing to edit')
+                    if form['old'] is None or 4 > len(form['old']) > 60:
+                        return failure_response(400, 'Error')
+                    user = get_user_from_token(token)
+                    pool = self.request.app['pool']
+                    async with pool.acquire() as conn:
+                        async with conn.cursor() as c:
+                            await c.execute(find(user['email'], form['old']))
+                            n = await c.fetchone()
+                            if n is not None:
+                                new_post = new_tuple_to_json(n)
+                                new_post.update(form['edit'])
+                                await c.execute(update_news_where(new_post, form['old']))
+                                return success_response(200, 'OK')
+                            return failure_response(400, f"No such post with title {form['old']}")
                 return failure_response(401, 'Authorize please')
             return failure_response(401, 'Authorize please')
         except Exception as e:

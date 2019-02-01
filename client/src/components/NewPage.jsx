@@ -75,8 +75,7 @@ const NewPage = ({
                                               Delete
                                           </MDBBtn>
                                       </div>
-                                      :
-                                      ''
+                                      : ''
                                   }
                               </MDBCol>
                           </MDBRow>
@@ -93,7 +92,7 @@ NewPage.propTypes = {
     isLoading : propTypes.bool.isRequired,
     isAuthor : propTypes.bool.isRequired,
     onEditClick : propTypes.func.isRequired,
-    onDeleteCLick : propTypes.func.isRequired
+    onDeleteClick : propTypes.func.isRequired
 }
 
 

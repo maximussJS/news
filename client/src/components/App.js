@@ -8,21 +8,23 @@ import Profile from '../container/Profile'
 import Options from '../container/Options'
 import CreateNew from '../container/CreateNew'
 import NewPage from '../container/NewPage'
+// import EditNew from '../container/EditNew'
 import '../index.css'
 
 
 const App = () => {
     return (
         <Layout>
-          <Switch>
-            <Route exact component={Content} path='/'/>
-            <Route exact component={Login} path='/login'/>
-            <Route exact component={Register} path='/register'/>
-            <Route exact component={Options} path='/options'/>
-            <Route exact component={Profile} path='/profile'/>
-            <Route component={CreateNew} path='/news/create'/>
-            <Route component={NewPage} path="/new/:url"/>}/>
-          </Switch>
+            <Switch>
+                <Route exact component={Content} path='/'/>
+                <Route exact component={Login} path='/login'/>
+                <Route exact component={Register} path='/register'/>
+                <Route exact component={Options} path='/options'/>
+                <Route exact component={Profile} path='/profile'/>
+                <Route exact component={CreateNew} path='/news/create'/>
+                {/*<Route component={EditNew} path='/news/edit'/>*/}
+                <Route component={NewPage} path='/new/:url'/>}/>
+            </Switch>
         </Layout>
     )
 }
