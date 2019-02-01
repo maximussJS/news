@@ -59,9 +59,9 @@ class New(View, CorsViewMixin):
                                                      name=user['name'],
                                                      email=user['email'])
                                     await c.execute(insert_new_post(post))
-                                    print(f"Post {post.title} was created by {user['email']}")
-                                    return success_response(201, f'Post {post.title} was created!')
-                                return failure_response(400, f"Post with title {form['title']} already exist")
+                                    print(f"NewPage {post.title} was created by {user['email']}")
+                                    return success_response(201, f'NewPage {post.title} was created!')
+                                return failure_response(400, f"NewPage with title {form['title']} already exist")
                             return failure_response(401, 'No such user')
                 return failure_response(401, 'Authorize please')
             return failure_response(401, 'Authorize please')
@@ -85,9 +85,9 @@ class New(View, CorsViewMixin):
                                 n = await c.fetchone()
                                 if n is not None:
                                     await c.execute(delete_new_by_title(title))
-                                    return success_response(200, f'Post {title} was deleted')
+                                    return success_response(200, f'NewPage {title} was deleted')
                                 return failure_response(400, f"No such post with title : {title}")
-                    return failure_response(400, 'No url parameter')
+                    return failure_response(400, 'No title parameter')
                 return failure_response(401, 'Authorize please')
             return failure_response(401, 'Authorize please')
         except Exception as e:

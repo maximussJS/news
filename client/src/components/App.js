@@ -7,6 +7,7 @@ import Layout from '../container/Layout'
 import Profile from '../container/Profile'
 import Options from '../container/Options'
 import CreateNew from '../container/CreateNew'
+import NewPage from '../container/NewPage'
 import '../index.css'
 
 
@@ -20,6 +21,7 @@ const App = () => {
             <Route exact component={Options} path='/options'/>
             <Route exact component={Profile} path='/profile'/>
             <Route component={CreateNew} path='/news/create'/>
+            <Route component={NewPage} path="/new/:url"/>}/>
           </Switch>
         </Layout>
     )

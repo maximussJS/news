@@ -11,3 +11,7 @@ export const isAuthenticated = () => localStorage.getItem('token') !== null
 export const getUser = () => decode(getToken()).user
 
 export const getPassword = () => decode(getToken()).password
+
+export const getUserEmail = () => getUser().email
+
+export const isAdmin = () => getUser().role === 'Admin'

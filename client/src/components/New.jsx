@@ -19,7 +19,7 @@ const New = ({
                     <h2>{item.text}</h2>
                 </CardText>
                 <Button className='btn-lg btn-info'
-                        href={`/news/${item.url}`}>
+                        href={`/new/${item.url}`}>
                     Read more
                 </Button>
             </CardBody>

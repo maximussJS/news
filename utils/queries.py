@@ -39,4 +39,4 @@ def insert_new_post(n: New) -> str:
 
 
 def delete_new_by_title(title: str) -> str:
-    return f"DELETE * FROM news WHERE title = '{title}'"
+    return f"DELETE FROM news WHERE title = '{title}'"
