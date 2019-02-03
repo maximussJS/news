@@ -10,10 +10,20 @@ def select_from_users_where_email(email: str) -> str:
     return f"SELECT * FROM users WHERE email = '{email}';"
 
 
+def select_from_users_where_url(url: str) -> str:
+    return f"SELECT * FROM users WHERE url = '{url}'"
+
+
 def insert_new_user(u: User) -> str:
     return f'''INSERT INTO users (name, email, password, age, country, role, gender, active, ava_url)
                VALUES ( '{u.name}', '{u.email}', '{u.password}', {u.age}, '{u.country}',
                         '{u.role}', {u.gender}, {u.active}, '{u.ava_url}' );'''
+
+
+def update_users_where(u: dict, email: str) -> str:
+    return f'''UPDATE users SET name='{u['name']}', email='{u['email']}', password='{u['password']}',
+                                age='{u['age']}', country='{u['country']}', gender='{u['gender']}',
+                                ava_url='{u['ava_url']}' WHERE email = '{email}' ;'''
 
 
 def select_all_news() -> str:
@@ -38,7 +48,7 @@ def insert_new_post(n: New) -> str:
                        '{n.created}', '{n.image_url}');'''
 
 
-def update_news_where(n: dict, old_title: str) -> str:
+def update_news_where_title(n: dict, old_title: str) -> str:
     return f'''UPDATE news SET title='{n['title']}', text='{n['text']}', image_url='{n['image']}'
                WHERE title = '{old_title}' ;'''
 

@@ -31,6 +31,10 @@ def get_user_from_token(token: str) -> dict:
     return decode(token, key=SECRET_KEY, algorithms='HS256')['user']
 
 
+def get_password_from_token(token: str) -> str:
+    return decode(token, key=SECRET_KEY, algorithms='HS256')['password']
+
+
 def user_tuple_to_json(u: tuple) -> dict:
     return dict(name=u[1], email=u[2], active=u[4], ava_url=u[5],
                 age=u[6], country=u[7], gender=u[8], role=u[9])

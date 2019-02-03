@@ -1,5 +1,6 @@
 from aiohttp.web import View, RouteTableDef, json_response
 from aiohttp_cors import CorsViewMixin
+from aiojobs.aiohttp import atomic
 from cloudinary import config
 from cloudinary.uploader import upload as save
 from config import CLOUD_NAME, API_KEY, API_SECRET
@@ -15,6 +16,8 @@ config(cloud_name=CLOUD_NAME, api_key=API_KEY, api_secret=API_SECRET)
 
 @upload.view('/upload')
 class Upload(View, CorsViewMixin):
+
+    @atomic
     async def post(self) -> json_response:
         try:
             if 'Authorization' in self.request.headers:

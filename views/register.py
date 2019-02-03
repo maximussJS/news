@@ -1,5 +1,6 @@
 from aiohttp.web import RouteTableDef, View, json_response
 from aiohttp_cors import CorsViewMixin
+from aiojobs.aiohttp import atomic
 from models.users import User
 from utils.responses import success_response, server_error_response, failure_response
 from utils.queries import select_from_users_where_email, insert_new_user
@@ -11,6 +12,8 @@ register = RouteTableDef()
 
 @register.view('/register')
 class Register(View, CorsViewMixin):
+
+    @atomic
     async def post(self) -> json_response:
         try:
             form = await self.request.json()

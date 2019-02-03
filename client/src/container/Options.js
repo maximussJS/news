@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import OptionForm from '../components/Options'
-import {getUser,authenticate,deauthenticate} from '../utils/auth'
-import {updateUser,deleteUser} from '../utils/requests'
+import {getUser, authenticate, deauthenticate, isAuthenticated, getPassword} from '../utils/auth'
+import {updateUser, deleteUser, uploadNewImage} from '../utils/requests'
 
 
 export default class Options extends Component {
@@ -13,6 +13,7 @@ export default class Options extends Component {
             password : '',
             newPassword : '',
             country : '',
+            image : '',
             age : 0,
             gender : 0,
             isLoading : false,
@@ -27,52 +28,75 @@ export default class Options extends Component {
         this.onGenderChange = this.onGenderChange.bind(this)
         this.onCountryChange = this.onCountryChange.bind(this)
         this.onDeleteClick = this.onDeleteClick.bind(this)
-        this.onImageClick = this.onImageClick.bind(this)
-        this.onFileInputChange = this.onFileInputChange.bind(this)
+        this.onImageChange = this.onImageChange.bind(this)
+    }
+
+    componentDidMount() {
+        if(isAuthenticated() && getPassword()) {
+            const user = getUser()
+            this.setState({
+                name : user.name,
+                email : user.email,
+                country : user.country,
+                image : user.ava_url,
+                age : user.age,
+                gender : +user.gender,
+            })
+        }
+        else this.props.history.push('/login')
     }
 
     async onSubmit() {
         try {
-            this.setState({
-                isLoading : true
+            const {name,email,country,age,gender,image,password,newPassword} = this.state
+            if(20 < name.length < 8) this.setState({
+                error : 'Invalid name length'
             })
-            const user = getUser()
-            const {name,email,country,age,gender,password,newPassword} = this.state
-            if(user.name === name && user.email === email && user.country === country
-                && user.age === age && +user.gender === gender && password === '') {
-                this.setState({
-                    error : 'You did not change your account settings',
-                    isLoading : false
-                })
-                setTimeout(() => this.setState({
-                    error : ''
-                }),2000)
-            }
-            else {
-                let result = {}
-                if(user.name !== name) result.name = name
-                if(user.email !== email) result.email = email
-                if(user.country !== country) result.country = country
-                if(user.age !== age) result.age = age
+            if(20 < email.length < 8) this.setState({
+                error : 'Invalid email length'
+            })
+            if(15 < country < 3) this.setState({
+                error : 'Invalid country length'
+            })
+            if(65 < age < 6) this.setState({
+                error : 'Invalid user age'
+            })
+            if(gender !== 0 && gender !== 1) this.setState({
+                error : 'Invalid gender'
+            })
+            if(image.length < 10) this.setState({
+                error : 'Invalid image'
+            })
+            if(this.state.error === '') {
+                const user = getUser()
+                const pass = getPassword()
+                let obj = {}
+                if(user.name !== name) obj.name = name
+                if(user.email !== email) obj.email = email
+                if(user.country !== country) obj.country = country
+                if(user.age !== age) obj.age = age
                 if(+user.gender !== gender) user.gender = gender
-                if(password !== '') result.password = password
-                if(newPassword !== '') result.newPassword = newPassword
-                const response = await updateUser(result)
-                if(response.success) {
-                    authenticate(response.token)
-                    this.props.history.push('/')
-                }
-                else {
-                    this.setState({
-                        isLoading : false,
-                        error : response.message
+                if(user.ava_url !== image) obj.image = image
+                if(password !== '' && pass === password) {
+                    20 > newPassword.length > 8 ? obj.newPassword = newPassword : this.setState({
+                        error : 'Invalid length of new password'
                     })
-                    setTimeout(() => this.setState({
-                        error : ''
-                    }),2000)
+                }
+                if(this.state.error === '') {
+                    this.setState({
+                        isLoading : true
+                    })
+                    const response = await updateUser(obj)
+                    if(response.success) {
+                        authenticate(response.token)
+                        this.props.history.push('/')
+                    }
+                    else this.setState({
+                        isLoading: false,
+                        error: response.text
+                    })
                 }
             }
-
         }
         catch (e) {
             this.setState({
@@ -80,17 +104,6 @@ export default class Options extends Component {
                 isLoading : false
             })
         }
-    }
-
-    componentDidMount() {
-        const user = getUser()
-        this.setState({
-            name : user.name,
-            email : user.email,
-            country : user.country,
-            age : user.age,
-            gender : +user.gender,
-        })
     }
 
     onNameChange(e) {
@@ -135,15 +148,33 @@ export default class Options extends Component {
         })
     }
 
-    onImageClick = () => document.getElementById('file-upload').click()
-
-    onFileInputChange() {
-        setTimeout( () => alert(JSON.stringify(document.getElementById('file-upload').files[0])),2000)
+    onImageChange = async e => {
+        try {
+            if(e.target.files[0] === null) this.setState({
+                error : 'You did not chose file'
+            })
+            else {
+                const response = await uploadNewImage(e.target.files[0])
+                response.success ? this.setState({
+                    isLoading : false,
+                    image : response.data
+                }) : this.setState({
+                    isLoading : false,
+                    error : response.text
+                })
+            }
+        }
+        catch (e) {
+            this.setState({
+                error : e.message,
+                isLoading : false
+            })
+        }
     }
 
     async onDeleteClick() {
         try {
-            await this.setState({
+            this.setState({
                 isLoading : true
             })
             const response = await deleteUser()
@@ -151,15 +182,10 @@ export default class Options extends Component {
                 deauthenticate()
                 this.props.history.push('/login')
             }
-            else {
-                this.setState({
-                    isLoading : false,
-                    error : 'Something goes wrong..',
-                })
-                setTimeout(() => this.setState({
-                    error : ''
-                }),2000)
-            }
+            else this.setState({
+                isLoading : false,
+                error : response.text
+            })
         }
         catch (e) {
             this.setState({
@@ -177,6 +203,7 @@ export default class Options extends Component {
                         newPassword={this.state.newPassword}
                         country={this.state.country}
                         age={this.state.age}
+                        image={this.state.image}
                         gender={this.state.gender}
                         isLoading={this.state.isLoading}
                         error={this.state.error}
@@ -189,8 +216,7 @@ export default class Options extends Component {
                         onCountryChange={this.onCountryChange}
                         onGenderChange={this.onGenderChange}
                         onDeleteClick={this.onDeleteClick}
-                        onImageClick={this.onImageClick}
-                        onFileInputChange={this.onFileInputChange}/>
+                        onImageChange={this.onImageChange}/>
         )
     }
 }

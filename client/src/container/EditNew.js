@@ -52,10 +52,8 @@ class EditNew extends Component {
                     this.setState({
                         isLoading : true
                     })
-                    alert('1 : ' + image + '  2 : ' + item.image)
-                    alert(JSON.stringify(obj))
                     const response = await editNew({
-                        edit : obj,
+                        obj : obj,
                         old : item.title
                     })
                     response.success ? this.props.history.push('/') : this.setState({

@@ -1,11 +1,12 @@
 from aiohttp.web import View, RouteTableDef, json_response
 from aiohttp_cors import CorsViewMixin
+from aiojobs.aiohttp import atomic
 from models.news import New as New_Model
 from utils.helpers import is_valid_token, get_user_from_token, new_tuple_to_json
 from utils.responses import success_response, failure_response, server_error_response
 from utils.queries import select_from_news_where_title, select_from_users_where_email, insert_new_post, \
                           select_from_news_where_url, select_from_news_where_author_and_title as find, \
-                          delete_new_by_title, update_news_where
+                          delete_new_by_title, update_news_where_title
 
 
 new = RouteTableDef()
@@ -13,24 +14,31 @@ new = RouteTableDef()
 
 @new.view('/new')
 class New(View, CorsViewMixin):
+
+    @atomic
     async def get(self) -> json_response:
         try:
             url = self.request.rel_url.query['url']
             if url is not None:
                 if len(url) < 4:
                     return failure_response(400, 'Invalid url length')
-                pool = self.request.app['pool']
-                async with pool.acquire() as conn:
-                    async with conn.cursor() as c:
-                        await c.execute(select_from_news_where_url(url))
-                        n = await c.fetchone()
-                        if n is not None:
-                            return success_response(200, 'OK', data=new_tuple_to_json(n))
-                        return failure_response(400, f"No such post on url : '{url}'")
+                if 'Authorization' in self.request.headers:
+                    token = self.request.headers['Authorization']
+                    if token is not None and is_valid_token(token):
+                        pool = self.request.app['pool']
+                        async with pool.acquire() as conn:
+                            async with conn.cursor() as c:
+                                await c.execute(select_from_news_where_url(url))
+                                n = await c.fetchone()
+                                if n is not None:
+                                    return success_response(200, 'OK', data=new_tuple_to_json(n))
+                                return failure_response(400, f"No such post on url : '{url}'")
+                return failure_response(401, 'Authorize please')
             return success_response(200, 'OK')
         except Exception as e:
             server_error_response(e)
 
+    @atomic
     async def post(self) -> json_response:
         try:
             if 'Authorization' in self.request.headers:
@@ -68,13 +76,14 @@ class New(View, CorsViewMixin):
         except Exception as e:
             return server_error_response(e)
 
+    @atomic
     async def put(self) -> json_response:
         try:
             if 'Authorization' in self.request.headers:
                 token = self.request.headers['Authorization']
                 if token is not None and is_valid_token(token):
                     form = await self.request.json()
-                    if len(form['edit'].items()) == 0:
+                    if len(form['obj'].items()) == 0:
                         return failure_response(400, 'Nothing to edit')
                     if form['old'] is None or 4 > len(form['old']) > 60:
                         return failure_response(400, 'Error')
@@ -86,8 +95,8 @@ class New(View, CorsViewMixin):
                             n = await c.fetchone()
                             if n is not None:
                                 new_post = new_tuple_to_json(n)
-                                new_post.update(form['edit'])
-                                await c.execute(update_news_where(new_post, form['old']))
+                                new_post.update(form['obj'])
+                                await c.execute(update_news_where_title(new_post, form['old']))
                                 return success_response(200, 'OK')
                             return failure_response(400, f"No such post with title {form['old']}")
                 return failure_response(401, 'Authorize please')
@@ -95,6 +104,7 @@ class New(View, CorsViewMixin):
         except Exception as e:
             return server_error_response(e)
 
+    @atomic
     async def delete(self) -> json_response:
         try:
             if 'Authorization' in self.request.headers:
