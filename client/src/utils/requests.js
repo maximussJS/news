@@ -20,4 +20,6 @@ export const deleteNew = async title => await request('DELETE', `/new?title=${ti
 
 export const editNew = async data => await request('PUT', '/new', data)
 
+export const getNewComments = async title => await request('GET', `/comments?title=${title}`)
+
 export const uploadNewImage = async file => await requestFile('POST','/upload', file)

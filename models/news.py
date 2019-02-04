@@ -19,8 +19,6 @@ class New(base):
     author_email = Column(String(20))
     created = Column(DateTime, default=datetime.now())
     image_url = Column(String(100))
-    tags = Column(String(10))
-    # tags = db.relationship('Tag', secondary='news_tags', backref=db.backref('news', lazy='dynamic'))
 
     def __init__(self, title, text, name, email, image_url='str'):
         self.title = title
@@ -30,7 +28,6 @@ class New(base):
         self.image_url = image_url
         self.generate_url()
         self.created = datetime.now()
-        self.tags = ['tag']
 
     def generate_url(self):
         if self.title:
@@ -42,8 +39,8 @@ class New(base):
         return f'<New title "{self.title}" written by {self.author_name}>'
 
     def to_json(self):
-        return dict(title=self.title, text=self.text, name=self.author_name, email=self.author_email,
-                    url=self.url, tags=self.tags, created=self.created, image_url=self.image_url)
+        return dict(title=self.title, text=self.text, name=self.author_name, url=self.url,
+                    email=self.author_email, created=self.created, image_url=self.image_url)
 
 
 base.metadata.create_all(engine)

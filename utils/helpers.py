@@ -43,3 +43,7 @@ def user_tuple_to_json(u: tuple) -> dict:
 def new_tuple_to_json(n: tuple) -> dict:
     return dict(title=n[1], url=n[2], text=n[3], name=n[4],
                 email=n[5], created=str(n[6])[:-7], image=n[7], tags=n[8])
+
+
+def comment_tuple_to_json(c: tuple) -> dict:
+    return dict(text=c[1], title=c[2], author=c[3], created=c[4])

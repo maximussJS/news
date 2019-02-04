@@ -1,7 +1,8 @@
 import React,{Component} from 'react'
 import Page from '../components/NewPage'
-import EditNew from '../container/EditNew'
-import {getNew, deleteNew} from '../utils/requests'
+import Comments from '../components/Comments'
+import EditNew from 'EditNew'
+import {getNew, deleteNew, getNewComments} from '../utils/requests'
 import {isAuthenticated, getPassword, getUserEmail, isAdmin} from '../utils/auth'
 
 
@@ -11,6 +12,7 @@ export default class NewPage extends Component {
         this.state = {
             item : '',
             error : '',
+            comments : [],
             isLoading : false,
             isAuthor : false,
             showEditPage : false
@@ -30,12 +32,20 @@ export default class NewPage extends Component {
                         if(url.length < 4) this.props.history.push('/error')
                         const response = await getNew(url)
                         if(response.success) {
-                            if(response.data.email === getUserEmail() || isAdmin()) this.setState({
-                                isAuthor : true,
-                            })
-                            this.setState({
-                                item : response.data,
-                                isLoading : false
+                            const comment = await getNewComments(response.data.title)
+                            if(comment.success) {
+                                if (response.data.email === getUserEmail() || isAdmin()) this.setState({
+                                    isAuthor: true,
+                                })
+                                this.setState({
+                                    comments : comment.data,
+                                    item: response.data,
+                                    isLoading: false
+                                })
+                            }
+                            else this.setState({
+                                isLoading : false,
+                                error : comment.text
                             })
                         }
                         else this.props.history.push('/error')
@@ -75,12 +85,18 @@ export default class NewPage extends Component {
     }
 
     render() {
-        const {showEditPage,item,error,isLoading,isAuthor} = this.state
+        const {showEditPage,item,error,isLoading,isAuthor,comments} = this.state
         return (
             <div>
                 { showEditPage ?
-                    <EditNew item={item}
-                             onBackClick={this.onEditClick}/> :
+                    <div>
+                        <EditNew item={item}
+                                 onBackClick={this.onEditClick}/>
+                        <Comments items={comments}
+                                  error={error}
+                                  isLoading={isLoading}/>
+                    </div>
+                    :
                     <Page item={item}
                           error={error}
                           isLoading={isLoading}

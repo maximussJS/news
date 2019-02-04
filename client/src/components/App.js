@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {Route,Switch} from 'react-router-dom'
 import Content from '../container/Content'
 import Login from '../container/Login'
@@ -8,7 +8,7 @@ import Profile from '../container/Profile'
 import Options from '../container/Options'
 import CreateNew from '../container/CreateNew'
 import NewPage from '../container/NewPage'
-import '../index.css'
+import '../css/index.css'
 
 
 const App = () => {
@@ -21,11 +21,11 @@ const App = () => {
                 <Route exact component={Options} path='/options'/>
                 <Route exact component={Profile} path='/profile'/>
                 <Route exact component={CreateNew} path='/news/create'/>
-                <Route component={NewPage} path='/new/:url'/>}/>
+                <Route component={NewPage} path='/new/:url'/>
             </Switch>
         </Layout>
     )
 }
 
 
-export default App;
+export default App

@@ -1,5 +1,6 @@
-from models.users import User
 from models.news import New
+from models.users import User
+from models.comments import Comment
 
 
 def select_all_users() -> str:
@@ -59,3 +60,12 @@ def update_news_where_title(n: dict, old_title: str) -> str:
 
 def delete_new_by_title(title: str) -> str:
     return f"DELETE FROM news WHERE title = '{title}' ;"
+
+
+def select_comments_where_title(title: str) -> str:
+    return f"SELECT * FROM comments WHERE post_title = '{title}' ;"
+
+
+def insert_new_comment(c: Comment) -> str:
+    return f'''INSERT INTO comments (text, post_title, author, created)
+               VALUES ('{c.text}', '{c.post_title}', '{c.author}', '{c.created}') ;'''

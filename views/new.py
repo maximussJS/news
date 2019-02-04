@@ -20,7 +20,7 @@ class New(View, CorsViewMixin):
         try:
             url = self.request.rel_url.query['url']
             if url is not None:
-                if len(url) < 4:
+                if 60 > len(url) < 4:
                     return failure_response(400, 'Invalid url length')
                 pool = self.request.app['pool']
                 async with pool.acquire() as conn:

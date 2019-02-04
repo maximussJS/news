@@ -18,10 +18,8 @@ class User(base):
     age = Column(Integer())
     country = Column(String(20))
     gender = Column(Boolean())
-    role = Column(String(10))
-    # role = db.relationship('Role', secondary='users_roles', backref=db.backref('users', lazy='dynamic'))
 
-    def __init__(self, name, email, password, active,  age, country, gender, role, ava_url='str'):
+    def __init__(self, name, email, password, active,  age, country, gender, ava_url='str'):
         self.name = name
         self.email = email
         self.password = password
@@ -30,14 +28,13 @@ class User(base):
         self.age = age
         self.country = country
         self.gender = gender
-        self.role = role
 
     def __repr__(self):
         return f'<User {self.name} , email={self.email}, active={self.active}>'
 
     def to_json(self):
-        return dict(name=self.name, email=self.email, active=self.active, ava_url=self.ava_url,
-                    age=self.age, country=self.country, gender=self.gender, role=self.role)
+        return dict(name=self.name, email=self.email, active=self.active, age=self.age,
+                    ava_url=self.ava_url, country=self.country, gender=self.gender)
 
 
 base.metadata.create_all(engine)
