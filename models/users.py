@@ -14,7 +14,7 @@ class User(base):
     email = Column(String(20), unique=True)
     password = Column(String(200))
     active = Column(Boolean())
-    ava_url = Column(String(50))
+    ava_url = Column(String(150))
     age = Column(Integer())
     country = Column(String(20))
     gender = Column(Boolean())

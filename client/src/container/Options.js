@@ -55,10 +55,10 @@ export default class Options extends Component {
             if(20 < email.length < 8) this.setState({
                 error : 'Invalid email length'
             })
-            if(15 < country < 3) this.setState({
+            if(15 < country && country < 3) this.setState({
                 error : 'Invalid country length'
             })
-            if(65 < age < 6) this.setState({
+            if(65 < age && age < 6) this.setState({
                 error : 'Invalid user age'
             })
             if(gender !== 0 && gender !== 1) this.setState({
@@ -75,18 +75,32 @@ export default class Options extends Component {
                 if(user.email !== email) obj.email = email
                 if(user.country !== country) obj.country = country
                 if(user.age !== age) obj.age = age
-                if(+user.gender !== gender) user.gender = gender
-                if(user.ava_url !== image) obj.image = image
-                if(password !== '' && pass === password) {
-                    20 > newPassword.length > 8 ? obj.newPassword = newPassword : this.setState({
-                        error : 'Invalid length of new password'
+                if(+user.gender !== gender) obj.gender = gender
+                if(user.ava_url !== image) obj.ava_url = image
+                if(password !== '') {
+                    if(pass === password) {
+                        if (20 >= newPassword.length && newPassword.length >= 8){
+                            obj.newPassword = newPassword
+                            obj.password = password
+                        }
+                        else this.setState({
+                            error: 'Invalid length of new password'
+                        })
+                    }
+                    else this.setState({
+                        error : 'Password doesnt match'
                     })
                 }
+                if(Object.keys(obj).length === 0) this.setState({
+                    error : 'You did not change tour account settings'
+                })
                 if(this.state.error === '') {
                     this.setState({
                         isLoading : true
                     })
-                    const response = await updateUser(obj)
+                    const response = await updateUser({
+                        obj : obj
+                    })
                     if(response.success) {
                         authenticate(response.token)
                         this.props.history.push('/')

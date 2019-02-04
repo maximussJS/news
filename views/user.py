@@ -37,7 +37,6 @@ class User(View, CorsViewMixin):
         except Exception as e:
             return server_error_response(e)
 
-    @atomic
     async def put(self):
         try:
             if 'Authorization' in self.request.headers:
@@ -47,12 +46,16 @@ class User(View, CorsViewMixin):
                     if len(form['obj'].items()) == 0:
                         return failure_response(400, 'Nothing to edit')
                     obj = form['obj']
+                    print(obj)
                     if 'password' in obj:
-                        if get_old_pass(token) == form['password']:
+                        print(get_old_pass(token) + ' ' + obj['password'])
+                        if get_old_pass(token) == obj['password']:
                             if obj['newPassword'] is None or 20 < len(obj['newPassword']) < 8:
                                 return failure_response(400, 'Invalid length of new password')
                             obj['password'] = crypt_password(obj['newPassword'])
-                        return failure_response(401, 'Invalid password')
+                        else:
+                            return failure_response(401, 'Invalid password')
+                    print('0')
                     usr = get_user_from_token(token)
                     pool = self.request.app['pool']
                     async with pool.acquire() as conn:
@@ -61,9 +64,14 @@ class User(View, CorsViewMixin):
                             u = await c.fetchone()
                             if u is not None:
                                 new_user = user_tuple_to_json(u)
+                                print(new_user)
                                 new_user.update(obj)
+                                if 'password' not in obj:
+                                    new_user['password'] = u[3]
                                 await c.execute(update_users_where(new_user, usr['email']))
+                                print('1')
                                 updated = dict((i, new_user[i]) for i in new_user if i != 'password')
+                                print('2')
                                 if 'password' in obj:
                                     new_token = generate_token(dict(user=updated,
                                                                     password=obj['newPassword']))
@@ -76,3 +84,5 @@ class User(View, CorsViewMixin):
             return failure_response(401, 'Authorize please')
         except Exception as e:
             return server_error_response(e)
+
+

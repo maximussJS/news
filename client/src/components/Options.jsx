@@ -30,13 +30,15 @@ const OptionForm = ({
             <h1>
                 Loading...
             </h1> :
-            <Container className='container-form'>
+            <Container className='container-form-option'>
                 <h1 className='text-center'>
                     Here you can change your account settings
                 </h1>
                 <hr className='blue'/>
                 <img src={`${image}`}
                      className="rounded float-left"
+                     height='200px'
+                     width='150px'
                      alt="image"/>
                 <form className='option-form'
                       onSubmit={onSubmit}>
@@ -109,12 +111,12 @@ const OptionForm = ({
                                   id="radio2"/>
                         Female
                     </FormInline>
+                    <hr/>
+                    <h4>
+                        Choose image
+                    </h4>
                     <FormInline>
-                        <h3 className='text-center'>
-                            Change your image
-                        </h3>
                         <MDBInput id='file-upload'
-                                  className='red'
                                   type='file'
                                   accept='image/*'
                                   onChange={onImageChange}/>

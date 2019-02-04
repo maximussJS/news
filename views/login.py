@@ -1,6 +1,5 @@
 from aiohttp.web import View, RouteTableDef, json_response
 from aiohttp_cors import CorsViewMixin
-from aiojobs.aiohttp import atomic
 from utils.helpers import generate_token, compare, user_tuple_to_json
 from utils.queries import select_from_users_where_email
 from utils.responses import success_response, failure_response, server_error_response
@@ -12,7 +11,6 @@ login = RouteTableDef()
 @login.view('/login')
 class Login(View, CorsViewMixin):
 
-    @atomic
     async def post(self) -> json_response:
         try:
             form = await self.request.json()

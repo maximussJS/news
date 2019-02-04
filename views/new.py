@@ -1,6 +1,5 @@
 from aiohttp.web import View, RouteTableDef, json_response
 from aiohttp_cors import CorsViewMixin
-from aiojobs.aiohttp import atomic
 from models.news import New as New_Model
 from utils.helpers import is_valid_token, get_user_from_token, new_tuple_to_json
 from utils.responses import success_response, failure_response, server_error_response
@@ -15,7 +14,6 @@ new = RouteTableDef()
 @new.view('/new')
 class New(View, CorsViewMixin):
 
-    @atomic
     async def get(self) -> json_response:
         try:
             url = self.request.rel_url.query['url']
@@ -38,7 +36,6 @@ class New(View, CorsViewMixin):
         except Exception as e:
             server_error_response(e)
 
-    @atomic
     async def post(self) -> json_response:
         try:
             if 'Authorization' in self.request.headers:
@@ -76,7 +73,6 @@ class New(View, CorsViewMixin):
         except Exception as e:
             return server_error_response(e)
 
-    @atomic
     async def put(self) -> json_response:
         try:
             if 'Authorization' in self.request.headers:
@@ -104,7 +100,6 @@ class New(View, CorsViewMixin):
         except Exception as e:
             return server_error_response(e)
 
-    @atomic
     async def delete(self) -> json_response:
         try:
             if 'Authorization' in self.request.headers:
