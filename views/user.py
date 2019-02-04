@@ -1,8 +1,8 @@
 from aiohttp.web import View, RouteTableDef, json_response
 from aiohttp_cors import CorsViewMixin
-from aiojobs.aiohttp import atomic
 from utils.responses import success_response, failure_response, server_error_response
-from utils.queries import select_from_users_where_url, select_from_users_where_email, update_users_where
+from utils.queries import select_from_users_where_url, select_from_users_where_email, \
+                          update_users_where_email, delete_user_by_email
 from utils.helpers import user_tuple_to_json, is_valid_token, get_user_from_token, \
                           get_password_from_token as get_old_pass, crypt_password, generate_token
 
@@ -13,7 +13,6 @@ user = RouteTableDef()
 @user.view('/user')
 class User(View, CorsViewMixin):
 
-    @atomic
     async def get(self) -> json_response:
         try:
             url = self.request.rel_url.query['url']
@@ -37,7 +36,7 @@ class User(View, CorsViewMixin):
         except Exception as e:
             return server_error_response(e)
 
-    async def put(self):
+    async def put(self) -> json_response:
         try:
             if 'Authorization' in self.request.headers:
                 token = self.request.headers['Authorization']
@@ -46,16 +45,13 @@ class User(View, CorsViewMixin):
                     if len(form['obj'].items()) == 0:
                         return failure_response(400, 'Nothing to edit')
                     obj = form['obj']
-                    print(obj)
                     if 'password' in obj:
-                        print(get_old_pass(token) + ' ' + obj['password'])
                         if get_old_pass(token) == obj['password']:
                             if obj['newPassword'] is None or 20 < len(obj['newPassword']) < 8:
                                 return failure_response(400, 'Invalid length of new password')
                             obj['password'] = crypt_password(obj['newPassword'])
                         else:
                             return failure_response(401, 'Invalid password')
-                    print('0')
                     usr = get_user_from_token(token)
                     pool = self.request.app['pool']
                     async with pool.acquire() as conn:
@@ -64,14 +60,11 @@ class User(View, CorsViewMixin):
                             u = await c.fetchone()
                             if u is not None:
                                 new_user = user_tuple_to_json(u)
-                                print(new_user)
                                 new_user.update(obj)
                                 if 'password' not in obj:
                                     new_user['password'] = u[3]
-                                await c.execute(update_users_where(new_user, usr['email']))
-                                print('1')
+                                await c.execute(update_users_where_email(new_user, usr['email']))
                                 updated = dict((i, new_user[i]) for i in new_user if i != 'password')
-                                print('2')
                                 if 'password' in obj:
                                     new_token = generate_token(dict(user=updated,
                                                                     password=obj['newPassword']))
@@ -85,4 +78,22 @@ class User(View, CorsViewMixin):
         except Exception as e:
             return server_error_response(e)
 
-
+    async def delete(self) -> json_response:
+        try:
+            if 'Authorization' in self.request.headers:
+                token = self.request.headers['Authorization']
+                if token is not None and is_valid_token(token):
+                    usr = get_user_from_token(token)
+                    pool = self.request.app['pool']
+                    async with pool.acquire() as conn:
+                        async with conn.cursor() as c:
+                            await c.execute(select_from_users_where_email(usr['email']))
+                            u = await c.fetchone()
+                            if u is not None:
+                                await c.execute(delete_user_by_email(usr['email']))
+                                return success_response(200, f"Deleted user with email {usr['email']}")
+                            return failure_response(400, 'Bad email')
+                return failure_response(401, 'Authorize please')
+            return failure_response(401, 'Authorize please')
+        except Exception as e:
+            return server_error_response(e)

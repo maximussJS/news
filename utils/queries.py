@@ -11,7 +11,7 @@ def select_from_users_where_email(email: str) -> str:
 
 
 def select_from_users_where_url(url: str) -> str:
-    return f"SELECT * FROM users WHERE url = '{url}'"
+    return f"SELECT * FROM users WHERE url = '{url}';"
 
 
 def insert_new_user(u: User) -> str:
@@ -20,10 +20,14 @@ def insert_new_user(u: User) -> str:
                         '{u.role}', {u.gender}, {u.active}, '{u.ava_url}' );'''
 
 
-def update_users_where(u: dict, email: str) -> str:
+def update_users_where_email(u: dict, email: str) -> str:
     return f'''UPDATE users SET name='{u['name']}', email='{u['email']}', password='{u['password']}',
                                 age='{u['age']}', country='{u['country']}', gender='{u['gender']}',
                                 ava_url='{u['ava_url']}' WHERE email = '{email}' ;'''
+
+
+def delete_user_by_email(email: str) -> str:
+    return f"DELETE FROM users WHERE email = '{email}';"
 
 
 def select_all_news() -> str:
@@ -54,4 +58,4 @@ def update_news_where_title(n: dict, old_title: str) -> str:
 
 
 def delete_new_by_title(title: str) -> str:
-    return f"DELETE FROM news WHERE title = '{title}'"
+    return f"DELETE FROM news WHERE title = '{title}' ;"
