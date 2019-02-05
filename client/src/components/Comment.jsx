@@ -8,9 +8,12 @@ const Comment = ({
 }) =>
     <MDBListGroupItem className="d-flex justify-content-between align-items-center">
         {item.text}
-        <MDBBadge color="primary"
+        <MDBBadge color="success"
+                  class='space'
                   pill>
-            {item.author}
+           by  <a href={`/${item.author}`}>
+                {item.author}
+            </a>    at    {item.created}
         </MDBBadge>
     </MDBListGroupItem>
 

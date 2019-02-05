@@ -20,12 +20,14 @@ class Comment(base):
         self.text = text
         self.author = author
         self.post_title = title
+        self.created = datetime.now()
 
     def __repr__(self):
         return f'<Comment author={self.author}>'
 
     def to_json(self):
-        return dict(text=self.text, author=self.author, title=self.post_title, created=self.created)
+        return dict(text=self.text, author=self.author,
+                    title=self.post_title, created=str(self.created)[:-7])
 
 
 base.metadata.create_all(engine)

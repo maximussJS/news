@@ -22,4 +22,6 @@ export const editNew = async data => await request('PUT', '/new', data)
 
 export const getNewComments = async title => await request('GET', `/comments?title=${title}`)
 
+export const createComment = async data => await request('POST', '/comments', data)
+
 export const uploadNewImage = async file => await requestFile('POST','/upload', file)

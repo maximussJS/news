@@ -40,7 +40,7 @@ class New(base):
 
     def to_json(self):
         return dict(title=self.title, text=self.text, name=self.author_name, url=self.url,
-                    email=self.author_email, created=self.created, image_url=self.image_url)
+                    email=self.author_email, created=str(self.created)[:-7], image_url=self.image_url)
 
 
 base.metadata.create_all(engine)

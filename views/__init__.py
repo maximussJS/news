@@ -17,6 +17,6 @@ class Index(View, CorsViewMixin):
                 async with conn.cursor() as c:
                     await c.execute(select_all_news())
                     news = await c.fetchall()
-                    return success_response(200, 'OK', data=list(map(lambda n: to_json(n), news)))
+                    return success_response(200, 'OK', data=list(map(lambda n: to_json(n), news))[::-1])
         except Exception as e:
             return server_error_response(e)

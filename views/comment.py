@@ -31,7 +31,7 @@ class Comment(View, CorsViewMixin):
                         return failure_response(400, f'No post with title {title}')
                     await c.execute(select_comments_where_title(title))
                     comments = await c.fetchall()
-                    return success_response(200, 'OK', data=list(map(lambda x: to_json(x), comments)))
+                    return success_response(200, 'OK', data=list(map(lambda x: to_json(x), comments[::-1])))
         except Exception as e:
             return server_error_response(e)
 
@@ -57,6 +57,6 @@ class Comment(View, CorsViewMixin):
                         return failure_response(400, f"No such post with title {form['title']}")
                     com = CommentModel(text=form['text'], title=form['title'], author=user['email'])
                     await c.execute(insert_new_comment(com))
-                    return success_response(201, f'New comment at {com.created}')
+                    return success_response(201, f'New comment at {com.created}', data=com.to_json())
         except Exception as e:
             return server_error_response(e)

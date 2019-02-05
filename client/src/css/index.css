@@ -93,5 +93,9 @@ hr {
 }
 
 .my-list-group {
-    width: 22rem;
+    width: 100rem;
+}
+
+.space {
+    letter-spacing: 5px;
 }
