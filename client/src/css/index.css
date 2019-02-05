@@ -99,3 +99,7 @@ hr {
 .space {
     letter-spacing: 5px;
 }
+
+.my-badge {
+    float : left
+}

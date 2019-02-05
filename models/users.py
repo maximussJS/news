@@ -18,8 +18,9 @@ class User(base):
     age = Column(Integer())
     country = Column(String(20))
     gender = Column(Boolean())
+    role = Column(String(10))
 
-    def __init__(self, name, email, password, active,  age, country, gender, ava_url='str'):
+    def __init__(self, name, email, password, active,  age, country, gender, role, ava_url='str'):
         self.name = name
         self.email = email
         self.password = password
@@ -28,13 +29,14 @@ class User(base):
         self.age = age
         self.country = country
         self.gender = gender
+        self.role = role
 
     def __repr__(self):
         return f'<User {self.name} , email={self.email}, active={self.active}>'
 
     def to_json(self):
-        return dict(name=self.name, email=self.email, active=self.active, age=self.age,
-                    ava_url=self.ava_url, country=self.country, gender=self.gender)
+        return dict(name=self.name, age=self.age, active=self.active, ava_url=self.ava_url,
+                    email=self.email, role=self.role, country=self.country, gender=self.gender)
 
 
 base.metadata.create_all(engine)

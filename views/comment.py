@@ -55,7 +55,10 @@ class Comment(View, CorsViewMixin):
                     n = await c.fetchone()
                     if n is None:
                         return failure_response(400, f"No such post with title {form['title']}")
-                    com = CommentModel(text=form['text'], title=form['title'], author=user['email'])
+                    com = CommentModel(text=form['text'],
+                                       title=form['title'],
+                                       author=user['name'],
+                                       email=user['email'])
                     await c.execute(insert_new_comment(com))
                     return success_response(201, f'New comment at {com.created}', data=com.to_json())
         except Exception as e:

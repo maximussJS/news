@@ -1,15 +1,17 @@
 import React from 'react'
 import propTypes from 'prop-types'
 import Comment from '../components/Comment'
-import {MDBBadge,MDBBtn, MDBListGroupItem,MDBInput ,FormInline,MDBListGroup,MDBContainer,} from 'mdbreact'
+import {MDBBtn,MDBListGroupItem,MDBInput,MDBListGroup,MDBContainer} from 'mdbreact'
 
 
 const CommentGroup = ({
     items,
     isLoading,
     error,
+    user,
     onTextChange,
-    onSubmit
+    onSubmit,
+    onEditCommentClick
 }) =>
     <div>
         {isLoading ? 'Loading...'
@@ -33,7 +35,13 @@ const CommentGroup = ({
                                Submit
                            </MDBBtn>
                     </MDBListGroupItem>
-                    {items ? items.map(key => <Comment item={key}/>) : "No comments"}
+                    {items ?
+                        items.map(key => <Comment item={key}
+                                                  user={user}
+                                                  onEditClick={onEditCommentClick}/>)
+                        :
+                        'No comments'
+                    }
                 </MDBListGroup>
                 {error ?
                     <span className='red'>
@@ -50,8 +58,10 @@ CommentGroup.propTypes = {
     items : propTypes.arrayOf(propTypes.object).isRequired,
     isLoading : propTypes.bool.isRequired,
     error : propTypes.string.isRequired,
+    user : propTypes.string.isRequired,
     onTextChange : propTypes.func.isRequired,
-    onSubmit : propTypes.func.isRequired
+    onSubmit : propTypes.func.isRequired,
+    onEditCommentClick : propTypes.func.isRequired
 }
 
 

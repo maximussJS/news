@@ -14,11 +14,13 @@ class Comment(base):
     text = Column(String(500))
     post_title = Column(String(20))
     author = Column(String(20))
+    email = Column(String(20))
     created = Column(DateTime, default=datetime.now())
 
-    def __init__(self, title, text, author):
+    def __init__(self, title, text, author, email):
         self.text = text
         self.author = author
+        self.email = email
         self.post_title = title
         self.created = datetime.now()
 
@@ -26,7 +28,7 @@ class Comment(base):
         return f'<Comment author={self.author}>'
 
     def to_json(self):
-        return dict(text=self.text, author=self.author,
+        return dict(text=self.text, author=self.author, email=self.email,
                     title=self.post_title, created=str(self.created)[:-7])
 
 

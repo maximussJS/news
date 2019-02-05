@@ -43,22 +43,17 @@ const NewPage = ({
                                       {item.text}
                                   </h3>
                                   <hr/>
-                                   <h2>
-                                       Written by :
-                                       <a href={`/user/${item.email}`}>
-                                               <b>
-                                                   {item.name}
-                                               </b>
-                                           email :
-                                           <strong>
-                                               {item.email}
-                                           </strong>
-                                       </a>
+                                   <h3>
+                                       Written by : <a href={`/user/${item.email}`}>
+                                       <b>
+                                           {item.name}
+                                       </b>
+                                   </a>
                                        <hr/>
                                        <h5>
                                            at {item.created}
                                        </h5>
-                                   </h2>
+                                   </h3>
                                   <hr/>
                                   { isAuthor ?
                                       <div align="center">

@@ -8,7 +8,7 @@ export const getNewsArray = async () => await request('GET','/')
 
 export const getNew = async url => await request('GET', `/new?url=${url}`)
 
-export const getUser = async url => await request('GET', `/user?url=${url}`)
+export const getUser = async email => await request('GET', `/user?email=${email}`)
 
 export const updateUser = async data => await request('PUT','/user', data)
 

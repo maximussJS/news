@@ -13,15 +13,21 @@ export default class NewPage extends Component {
             item : '',
             error : '',
             text : '',
+            user : '',
+            commentText : '',
             comments : [],
             isLoading : false,
             isAuthor : false,
-            showEditPage : false
+            showEditPage : false,
+            showEditComment : false
         }
         this.onTextChange = this.onTextChange.bind(this)
         this.onCommentClick = this.onCommentClick.bind(this)
         this.onEditClick = this.onEditClick.bind(this)
         this.onDeleteClick = this.onDeleteClick.bind(this)
+        this.onDeleteCommentClick = this.onDeleteCommentClick.bind(this)
+        this.onEditCommentClick = this.onEditCommentClick.bind(this)
+        this.onEditCommentTextChange = this.onEditCommentTextChange.bind(this)
     }
 
     componentDidMount() {
@@ -37,10 +43,13 @@ export default class NewPage extends Component {
                         if(response.success) {
                             const comment = await getNewComments(response.data.title)
                             if(comment.success) {
-                                if (response.data.email === getUserEmail() || isAdmin()) this.setState({
-                                    isAuthor: true,
-                                })
+                                if(response.data.email === getUserEmail() || isAdmin()) {
+                                    this.setState({
+                                        isAuthor: true
+                                    })
+                                }
                                 this.setState({
+                                    user : getUserEmail(),
                                     comments : comment.data,
                                     item: response.data,
                                     isLoading: false
@@ -66,6 +75,22 @@ export default class NewPage extends Component {
         this.setState({
             text : e.target.value
         })
+    }
+
+    onEditCommentTextChange(e) {
+        this.setState({
+            commentText : e.target.value
+        })
+    }
+
+    onEditCommentClick(e) {
+        this.setState(state => ({
+           showEditComment : !state.showEditComment,
+        }))
+    }
+
+    onDeleteCommentClick(e) {
+       alert(e)
     }
 
     onCommentClick = async () => {
@@ -128,7 +153,7 @@ export default class NewPage extends Component {
     }
 
     render() {
-        const {showEditPage,item,error,isLoading,isAuthor,comments} = this.state
+        const {showEditPage,item,error,isLoading,isAuthor,comments,user} = this.state
         return (
             <div>
                 { showEditPage ?
@@ -144,6 +169,8 @@ export default class NewPage extends Component {
                               onEditClick={this.onEditClick}/>
                         <Comments onTextChange={this.onTextChange}
                                   onSubmit={this.onCommentClick}
+                                  onEditCommentClick={this.onEditCommentClick}
+                                  user={user}
                                   items={comments}
                                   error={error}
                                   isLoading={isLoading}/>

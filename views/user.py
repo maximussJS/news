@@ -2,10 +2,10 @@ from aiohttp.web import View, RouteTableDef, json_response
 from aiohttp_cors import CorsViewMixin
 from utils.decorators import authorize
 from utils.responses import success_response, failure_response, server_error_response
-from utils.queries import select_from_users_where_url, select_from_users_where_email, \
-                          update_users_where_email, delete_user_by_email
-from utils.helpers import user_tuple_to_json, is_valid_token, get_user_from_token, \
-                          get_password_from_token as get_old_pass, crypt_password, generate_token
+from utils.queries import select_from_users_where_email, update_users_where_email,\
+                          delete_user_by_email
+from utils.helpers import user_tuple_to_json, get_user_from_token, generate_token, \
+                          get_password_from_token as get_old_pass, crypt_password
 
 
 user = RouteTableDef()
@@ -17,19 +17,19 @@ class User(View, CorsViewMixin):
     @authorize
     async def get(self) -> json_response:
         try:
-            url = self.request.rel_url.query['url']
-            if url is not None:
-                if 20 < len(url) < 8:
-                    return failure_response(400, 'Invalid url length')
+            email = self.request.rel_url.query['email']
+            if email is not None:
+                if 20 < len(email) < 8:
+                    return failure_response(400, 'Invalid email length')
                 pool = self.request.app['pool']
                 async with pool.acquire() as conn:
                     async with conn.cursor() as c:
-                        await c.execute(select_from_users_where_url(url))
+                        await c.execute(select_from_users_where_email(email))
                         u = await c.fetchone()
                         if u is not None:
                             return success_response(200, 'OK', data=user_tuple_to_json(u))
-                        return failure_response(400, f"No such user on url : '{url}'")
-            return failure_response(400, 'No url param')
+                        return failure_response(400, f"No such email : '{email}'")
+            return failure_response(400, 'No email param')
         except Exception as e:
             return server_error_response(e)
 

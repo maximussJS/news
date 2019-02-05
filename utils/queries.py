@@ -11,10 +11,6 @@ def select_from_users_where_email(email: str) -> str:
     return f"SELECT * FROM users WHERE email = '{email}';"
 
 
-def select_from_users_where_url(url: str) -> str:
-    return f"SELECT * FROM users WHERE url = '{url}';"
-
-
 def insert_new_user(u: User) -> str:
     return f'''INSERT INTO users (name, email, password, age, country, role, gender, active, ava_url)
                VALUES ( '{u.name}', '{u.email}', '{u.password}', {u.age}, '{u.country}',
@@ -67,5 +63,5 @@ def select_comments_where_title(title: str) -> str:
 
 
 def insert_new_comment(c: Comment) -> str:
-    return f'''INSERT INTO comments (text, post_title, author, created)
-               VALUES ('{c.text}', '{c.post_title}', '{c.author}', '{c.created}') ;'''
+    return f'''INSERT INTO comments (text, post_title, author, email, created)
+               VALUES ('{c.text}', '{c.post_title}', '{c.author}', '{c.email}', '{c.created}') ;'''
