@@ -32,14 +32,19 @@ class Register(View, CorsViewMixin):
                 async with conn.cursor() as c:
                     await c.execute(select_from_users_where_email(form['email']))
                     usr = await c.fetchone()
-                    if usr is not None:
-                        return failure_response(400, f"User with email {form['email']} already exists")
-                    password_hash = crypt_password(form['password'])
-                    user = User(name=form['name'], email=form['email'], password=password_hash,
-                                country=form['country'], age=int(form['age']), role='User',
-                                gender=form['gender'], active=True)
-                    await c.execute(insert_new_user(user))
-                    print(f'Created new user : {user.email}')
-                    return success_response(201, f'Created user : {user.email}')
+                    if usr is None:
+                        password_hash = crypt_password(form['password'])
+                        user = User(name=form['name'],
+                                    email=form['email'],
+                                    password=password_hash,
+                                    country=form['country'],
+                                    age=int(form['age']),
+                                    gender=form['gender'],
+                                    active=True,
+                                    role='User')
+                        await c.execute(insert_new_user(user))
+                        print(f'Created new user : {user.email}')
+                        return success_response(201, f'Created user : {user.email}')
+                    return failure_response(400, f"User with email {form['email']} already exists")
         except Exception as e:
             return server_error_response(e)

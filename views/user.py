@@ -18,18 +18,18 @@ class User(View, CorsViewMixin):
     async def get(self) -> json_response:
         try:
             email = self.request.rel_url.query['email']
-            if email is None:
-                return failure_response(400, 'No email param')
-            if 20 < len(email) < 8:
-                return failure_response(400, 'Invalid email length')
-            pool = self.request.app['pool']
-            async with pool.acquire() as conn:
-                async with conn.cursor() as c:
-                    await c.execute(select_from_users_where_email(email))
-                    u = await c.fetchone()
-                    if u is not None:
-                        return success_response(200, 'OK', data=user_tuple_to_json(u))
-                    return failure_response(400, f"No such email : '{email}'")
+            if email is not None:
+                if 20 < len(email) < 8:
+                    return failure_response(400, 'Invalid email length')
+                pool = self.request.app['pool']
+                async with pool.acquire() as conn:
+                    async with conn.cursor() as c:
+                        await c.execute(select_from_users_where_email(email))
+                        u = await c.fetchone()
+                        if u is not None:
+                            return success_response(200, 'OK', data=user_tuple_to_json(u))
+                        return failure_response(400, f"No such email : '{email}'")
+            return failure_response(400, 'No email param')
         except Exception as e:
             return server_error_response(e)
 
@@ -54,21 +54,21 @@ class User(View, CorsViewMixin):
                 async with conn.cursor() as c:
                     await c.execute(select_from_users_where_email(usr['email']))
                     u = await c.fetchone()
-                    if u is None:
-                        return failure_response(400, f"No such user with email {usr['email']}")
-                    new_user = user_tuple_to_json(u)
-                    new_user.update(obj)
-                    if 'password' not in obj:
-                        new_user['password'] = u[3]
-                    await c.execute(update_users_where_email(new_user, usr['email']))
-                    updated = dict((i, new_user[i]) for i in new_user if i != 'password')
-                    if 'password' in obj:
-                        new_token = generate_token(dict(user=updated,
-                                                        password=obj['newPassword']))
-                    else:
-                        new_token = generate_token(dict(user=updated,
-                                                        password=get_old_pass(token)))
-                    return success_response(200, 'OK', token=new_token)
+                    if u is not None:
+                        new_user = user_tuple_to_json(u)
+                        new_user.update(obj)
+                        if 'password' not in obj:
+                            new_user['password'] = u[3]
+                        await c.execute(update_users_where_email(new_user, usr['email']))
+                        updated = dict((i, new_user[i]) for i in new_user if i != 'password')
+                        if 'password' in obj:
+                            new_token = generate_token(dict(user=updated,
+                                                            password=obj['newPassword']))
+                        else:
+                            new_token = generate_token(dict(user=updated,
+                                                            password=get_old_pass(token)))
+                        return success_response(200, 'OK', token=new_token)
+                    return failure_response(400, f"No such user with email {usr['email']}")
         except Exception as e:
             return server_error_response(e)
 
@@ -81,9 +81,9 @@ class User(View, CorsViewMixin):
                 async with conn.cursor() as c:
                     await c.execute(select_from_users_where_email(usr['email']))
                     u = await c.fetchone()
-                    if u is None:
-                        return failure_response(400, 'Bad email')
-                    await c.execute(delete_user_by_email(usr['email']))
-                    return success_response(200, f"Deleted user with email {usr['email']}")
+                    if u is not None:
+                        await c.execute(delete_user_by_email(usr['email']))
+                        return success_response(200, f"Deleted user with email {usr['email']}")
+                    return failure_response(400, 'Bad email')
         except Exception as e:
             return server_error_response(e)

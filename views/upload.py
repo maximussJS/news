@@ -21,9 +21,9 @@ class Upload(View, CorsViewMixin):
         try:
             form_data = await self.request.post()
             file = form_data['file'].file
-            if file is None:
-                return failure_response(400, 'You did not send file')
-            result = save(file=file)
-            return success_response(200, 'OK', data=result['url'])
+            if file is not None:
+                result = save(file=file)
+                return success_response(200, 'OK', data=result['url'])
+            return failure_response(400, 'You did not send file')
         except Exception as e:
             return server_error_response(e)
