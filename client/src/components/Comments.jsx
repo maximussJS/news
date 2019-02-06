@@ -9,9 +9,14 @@ const CommentGroup = ({
     isLoading,
     error,
     user,
+    edit,
     onTextChange,
     onSubmit,
-    onEditCommentClick
+    onEditCommentClick,
+    onEditCommentSubmit,
+    onCancelCommentClick,
+    onDeleteCommentClick,
+    onEditCommentTextChange
 }) =>
     <div>
         {isLoading ? 'Loading...'
@@ -38,7 +43,12 @@ const CommentGroup = ({
                     {items ?
                         items.map(key => <Comment item={key}
                                                   user={user}
-                                                  onEditClick={onEditCommentClick}/>)
+                                                  edit={edit}
+                                                  onEditClick={onEditCommentClick}
+                                                  onSubmit={onEditCommentSubmit}
+                                                  onTextChange={onEditCommentTextChange}
+                                                  onCancelClick={onCancelCommentClick}
+                                                  onDeleteClick={onDeleteCommentClick}/>)
                         :
                         'No comments'
                     }
@@ -59,9 +69,14 @@ CommentGroup.propTypes = {
     isLoading : propTypes.bool.isRequired,
     error : propTypes.string.isRequired,
     user : propTypes.string.isRequired,
+    edit : propTypes.number.isRequired,
     onTextChange : propTypes.func.isRequired,
     onSubmit : propTypes.func.isRequired,
-    onEditCommentClick : propTypes.func.isRequired
+    onEditCommentSubmit : propTypes.func.isRequired,
+    onEditCommentClick : propTypes.func.isRequired,
+    onCancelCommentClick : propTypes.func.isRequired,
+    onDeleteCommentClick : propTypes.func.isRequired,
+    onEditCommentTextChange : propTypes.func.isRequired
 }
 
 

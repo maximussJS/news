@@ -24,4 +24,6 @@ export const getNewComments = async title => await request('GET', `/comments?tit
 
 export const createComment = async data => await request('POST', '/comments', data)
 
+export const deleteComment = async id => await request('DELETE', `/comments?id=${id}`)
+
 export const uploadNewImage = async file => await requestFile('POST','/upload', file)

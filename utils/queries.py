@@ -62,6 +62,14 @@ def select_comments_where_title(title: str) -> str:
     return f"SELECT * FROM comments WHERE post_title = '{title}' ;"
 
 
+def select_comment_by_id(delete_id: int) -> str:
+    return f'SELECT * FROM comments WHERE id = {delete_id} ;'
+
+
 def insert_new_comment(c: Comment) -> str:
     return f'''INSERT INTO comments (text, post_title, author, email, created)
                VALUES ('{c.text}', '{c.post_title}', '{c.author}', '{c.email}', '{c.created}') ;'''
+
+
+def delete_comment_by_id(delete_id: int) -> str:
+    return f'DELETE FROM comments WHERE id = {delete_id} ;'

@@ -28,8 +28,8 @@ class Comment(base):
         return f'<Comment author={self.author}>'
 
     def to_json(self):
-        return dict(text=self.text, author=self.author, email=self.email,
-                    title=self.post_title, created=str(self.created)[:-7])
+        return dict(text=self.text, email=self.email, title=self.post_title,
+                    id=self.id, author=self.author, created=str(self.created)[:-7])
 
 
 base.metadata.create_all(engine)

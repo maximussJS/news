@@ -2,8 +2,8 @@ import React,{Component} from 'react'
 import Page from '../components/NewPage'
 import Comments from '../components/Comments'
 import EditNew from '../container/EditNew'
-import {getNew, deleteNew, getNewComments, createComment} from '../utils/requests'
 import {isAuthenticated, getPassword, getUserEmail, isAdmin} from '../utils/auth'
+import {getNew, deleteNew, getNewComments, createComment, deleteComment} from '../utils/requests'
 
 
 export default class NewPage extends Component {
@@ -15,18 +15,20 @@ export default class NewPage extends Component {
             text : '',
             user : '',
             commentText : '',
+            editId : -1,
             comments : [],
             isLoading : false,
             isAuthor : false,
             showEditPage : false,
-            showEditComment : false
         }
         this.onTextChange = this.onTextChange.bind(this)
         this.onCommentClick = this.onCommentClick.bind(this)
         this.onEditClick = this.onEditClick.bind(this)
         this.onDeleteClick = this.onDeleteClick.bind(this)
         this.onDeleteCommentClick = this.onDeleteCommentClick.bind(this)
+        this.onEditCommentSubmit = this.onEditCommentSubmit.bind(this)
         this.onEditCommentClick = this.onEditCommentClick.bind(this)
+        this.onCancelCommentClick = this.onCancelCommentClick.bind(this)
         this.onEditCommentTextChange = this.onEditCommentTextChange.bind(this)
     }
 
@@ -77,20 +79,55 @@ export default class NewPage extends Component {
         })
     }
 
+    onEditCommentSubmit(e) {
+        alert(this.state.commentText)
+        this.setState({
+            error : ''
+        })
+    }
+
     onEditCommentTextChange(e) {
         this.setState({
             commentText : e.target.value
         })
     }
 
-    onEditCommentClick(e) {
-        this.setState(state => ({
-           showEditComment : !state.showEditComment,
-        }))
+    onEditCommentClick(id) {
+        this.setState({
+            editId: id
+        })
     }
 
-    onDeleteCommentClick(e) {
-       alert(e)
+    onDeleteCommentClick = async id => {
+       try {
+           const comments = this.state.comments
+           this.setState({
+               isLoading : true
+           })
+           const response = await deleteComment(id)
+           if(response.success) {
+               let updated = comments.filter(c => c.id !== id)
+               this.setState({
+                   isLoading : false,
+                   comments : updated
+               })
+           }
+           else this.setState({
+               isLoading : false,
+               error : response.text
+           })
+       }
+       catch (e) {
+           this.setState({
+               error : e.message
+           })
+       }
+    }
+
+    onCancelCommentClick() {
+        this.setState({
+            editId : -1
+        })
     }
 
     onCommentClick = async () => {
@@ -105,7 +142,7 @@ export default class NewPage extends Component {
                     title : item.title
                 })
                 if(response.success) {
-                    comments.push(response.data)
+                    comments.unshift(response.data)
                     this.setState({
                          isLoading : false,
                          comments : comments
@@ -127,7 +164,7 @@ export default class NewPage extends Component {
         }
     }
 
-    onEditClick(e) {
+    onEditClick() {
         this.setState(state => ({
             showEditPage : !state.showEditPage
         }))
@@ -153,7 +190,7 @@ export default class NewPage extends Component {
     }
 
     render() {
-        const {showEditPage,item,error,isLoading,isAuthor,comments,user} = this.state
+        const {showEditPage,item,error,isLoading,isAuthor,comments,user,editId} = this.state
         return (
             <div>
                 { showEditPage ?
@@ -169,7 +206,12 @@ export default class NewPage extends Component {
                               onEditClick={this.onEditClick}/>
                         <Comments onTextChange={this.onTextChange}
                                   onSubmit={this.onCommentClick}
+                                  onEditCommentTextChange={this.onEditCommentTextChange}
                                   onEditCommentClick={this.onEditCommentClick}
+                                  onEditCommentSubmit={this.onEditCommentSubmit}
+                                  onCancelCommentClick={this.onCancelCommentClick}
+                                  onDeleteCommentClick={this.onDeleteCommentClick}
+                                  edit={editId}
                                   user={user}
                                   items={comments}
                                   error={error}
