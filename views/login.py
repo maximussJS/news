@@ -23,10 +23,10 @@ class Login(View, CorsViewMixin):
                 async with conn.cursor() as c:
                     await c.execute(select_from_users_where_email(form['email']))
                     user = await c.fetchone()
-                    if user is not None and compare(user[3], form['password']):
-                        token = generate_token(dict(user=user_tuple_to_json(user),
-                                                    password=form['password']))
-                        return success_response(200, 'OK', token=token)
-                    return failure_response(400, 'Invalid email or password')
+                    if user is None and not compare(user[3], form['password']):
+                        return failure_response(400, 'Invalid email or password')
+                    token = generate_token(dict(user=user_tuple_to_json(user),
+                                                password=form['password']))
+                    return success_response(200, 'OK', token=token)
         except Exception as e:
             return server_error_response(e)
