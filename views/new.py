@@ -19,6 +19,7 @@ class New(View, CorsViewMixin):
     async def get(self) -> json_response:
         try:
             url = self.request.rel_url.query['url']
+            print('remote' + self.request.remote)
             if url is not None:
                 if 60 > len(url) < 4:
                     return failure_response(400, 'Invalid url length')
@@ -85,7 +86,7 @@ class New(View, CorsViewMixin):
                         new_post = new_tuple_to_json(n)
                         new_post.update(form['obj'])
                         await c.execute(update_news_where_title(new_post, form['old']))
-                        return success_response(200, 'OK')
+                        return success_response(200, 'Updated!')
                     return failure_response(400, f"No such post with title {form['old']}")
         except Exception as e:
             return server_error_response(e)

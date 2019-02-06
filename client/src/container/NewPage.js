@@ -2,8 +2,10 @@ import React,{Component} from 'react'
 import Page from '../components/NewPage'
 import Comments from '../components/Comments'
 import EditNew from '../container/EditNew'
-import {isAuthenticated, getPassword, getUserEmail, isAdmin} from '../utils/auth'
-import {getNew, deleteNew, getNewComments, createComment, deleteComment} from '../utils/requests'
+import {changeText} from '../utils/helpers'
+import {isAuthenticated,getPassword,getUserEmail,isAdmin} from '../utils/auth'
+import {getNew,deleteNew,getNewComments,createComment,deleteComment,
+        editComment} from '../utils/requests'
 
 
 export default class NewPage extends Component {
@@ -79,11 +81,39 @@ export default class NewPage extends Component {
         })
     }
 
-    onEditCommentSubmit(e) {
-        alert(this.state.commentText)
-        this.setState({
-            error : ''
-        })
+    onEditCommentSubmit = async id => {
+        try {
+            const {comments,commentText} = this.state
+            if(commentText !== '') {
+                this.setState({
+                    isLoading :true
+                })
+                const response = await editComment({
+                    id : id,
+                    text : commentText
+                })
+                if(response.success) {
+                    let updated = comments.map( c => c.id === id ? changeText(c,commentText) : c)
+                    this.setState({
+                        isLoading : false,
+                        comments : updated,
+                        editId : -1
+                    })
+                }
+                else this.setState({
+                    isLoading : false,
+                    error : response.text
+                })
+            }
+            else this.setState({
+                error : 'Invalid comment length'
+            })
+        }
+        catch (e) {
+            this.setState({
+                error : e.message
+            })
+        }
     }
 
     onEditCommentTextChange(e) {

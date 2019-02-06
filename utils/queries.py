@@ -71,5 +71,9 @@ def insert_new_comment(c: Comment) -> str:
                VALUES ('{c.text}', '{c.post_title}', '{c.author}', '{c.email}', '{c.created}') ;'''
 
 
+def update_comment_by_id(text: str, c_id: int) -> str:
+    return f"UPDATE comments SET text = '{text}' WHERE id = {c_id} ;"
+
+
 def delete_comment_by_id(delete_id: int) -> str:
     return f'DELETE FROM comments WHERE id = {delete_id} ;'
