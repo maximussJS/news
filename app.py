@@ -1,7 +1,6 @@
 from aiohttp.web import Application
 from aiopg import create_pool
 from aiohttp_cors import ResourceOptions, setup as cors_setup
-from aiojobs.aiohttp import setup as job_setup
 from config import SQLALCHEMY_DATABASE_URI
 from views import index
 from views.new import new
@@ -20,6 +19,7 @@ def setup_routes(app: Application):
     app.add_routes(login)
     app.add_routes(register)
     app.add_routes(upload)
+    app.router.add_static('/', path='client/build/', show_index=True, follow_symlinks=True)
 
 
 async def engine_pool(app: Application):
@@ -42,6 +42,5 @@ async def init_app() -> Application:
     })
     for route in list(app.router.routes()):
         cors.add(route)
-    job_setup(app)
     app.cleanup_ctx.append(engine_pool)
     return app

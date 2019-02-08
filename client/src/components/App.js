@@ -10,6 +10,7 @@ import Options from '../container/Options'
 import CreateNew from '../container/CreateNew'
 import NewPage from '../container/NewPage'
 import User from '../container/User'
+import Error from '../components/Error'
 import '../css/index.css'
 
 
@@ -26,6 +27,7 @@ const App = () => {
                 <Route exact component={CreateNew} path='/news/create'/>
                 <Route component={User} path='/user/:email'/>
                 <Route component={NewPage} path='/new/:url'/>
+                <Route component={Error} path='/error'/>
             </Switch>
         </Layout>
     )
